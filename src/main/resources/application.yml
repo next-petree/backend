@@ -27,7 +27,7 @@ springdoc:
     path: /swagger-ui.html
     display-request-duration: true
     groups-order: DESC
-    operationsSorter: method 
+    operationsSorter: method
     disable-swagger-default-url: true
   show-actuator: true
   packages-to-scan:
