@@ -1,0 +1,168 @@
+name: Backend CI/CD Pipeline
+
+on:
+  push:
+    branches:
+      - main
+
+permissions:
+  contents: read
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+
+
+      - name: Set up JDK 11
+        uses: actions/setup-java@v3
+        with:
+          java-version: '11'
+          distribution: 'temurin'
+
+      # Set APPLICATION_YML secret as an environment variable
+      - name: Set APPLICATION_YML secret as environment variable
+        run: |
+          echo "${{ secrets.APPLICATION_YML }}" > ./src/main/resources/application.yml
+          ls ./src/main/resources/
+          cat ./src/main/resources/application.yml
+
+      # Add execute permission to Gradle Wrapper
+      - name: Grant execute permission to Gradle Wrapper
+        run: chmod +x ./gradlew
+
+      # Run Gradle build
+      - name: Run Gradle build
+        run: ./gradlew build
+
+      # Build with Gradle (exclude tests)
+      - name: Build with Gradle (exclude tests)
+        run: |
+          ./gradlew bootJar
+
+      # Archive the bootJar artifact
+      - name: Archive bootJar artifact
+        uses: actions/upload-artifact@v2
+        with:
+          name: bootJar-artifact
+          path: build/libs/petree-0.0.1-SNAPSHOT.jar
+
+  deploy:
+    runs-on: ubuntu-latest
+    needs: build
+
+    env:
+      TZ: "Asia/Seoul"
+      AWS_REGION: ap-northeast-2
+      AWS_ECR_REGISTRY: 049643198326.dkr.ecr.ap-northeast-2.amazonaws.com
+      AWS_ECR_REPOSITORY: ecr-repo
+      AWS_ECR_REPOSITORY_REDIS: ecr-redis
+      ECR_TAG: latest-spring
+      REDIS_IMAGE_TAG: latest-redis
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      # Download bootJar artifact
+      - name: Download bootJar artifact and SHA256 hash
+        uses: actions/download-artifact@v2
+        with:
+          name: bootJar-artifact
+          path: /home/runner/work/backend/backend/
+
+      # List files in the directory
+      - name: List files in the directory
+        run: | 
+            ls /home/runner/work/backend/backend/
+
+      #https://github.com/aws-actions/configure-aws-credentials경로를 통해 기존 aws로그인 수정
+      - name: Configure AWS Credentials
+        uses: aws-actions/configure-aws-credentials@v2
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: ${{ secrets.AWS_REGION }}
+
+      # ECR Login
+      - name: Log in to Amazon ECR
+        run: aws ecr get-login-password --region ${{ env.AWS_REGION }} | docker login --username AWS --password-stdin ${{ env.AWS_ECR_REGISTRY }}
+
+      # Build and ECR image Push (Dockerfile)
+      - name: Build, tag, and push sample image to Amazon ECR
+        run: |
+          docker build --no-cache -t ${{ secrets.AWS_ECR_REGISTRY }}/${{ secrets.AWS_ECR_REPOSITORY }}:$ECR_TAG .
+          docker push ${{ secrets.AWS_ECR_REGISTRY }}/${{ secrets.AWS_ECR_REPOSITORY }}:$ECR_TAG
+
+      # Pull Redis image from Docker Hub
+      - name: Pull Redis image from Docker Hub
+        run: docker pull redis:latest
+
+      # Tag Redis image with ECR URL
+      - name: Tag Redis image with ECR URL
+        run: |
+          docker tag redis:latest ${{ secrets.AWS_ECR_REGISTRY }}/${{ secrets.AWS_ECR_REPOSITORY_REDIS }}:$REDIS_IMAGE_TAG
+          docker push ${{ secrets.AWS_ECR_REGISTRY }}/${{ secrets.AWS_ECR_REPOSITORY_REDIS }}:$REDIS_IMAGE_TAG
+     
+      # Copy docker-compose.yml to EC2 instance
+      - name: Copy docker-compose.yml to EC2 instance
+        uses: appleboy/scp-action@v0.1.4
+        with:
+          host: ${{ secrets.EC2_HOST }}
+          username: ${{ secrets.EC2_USERNAME }}
+          key: ${{ secrets.EC2_PRIVATE_KEY }}
+          port: 22
+          source: "./docker-compose.yml"
+          target: "/home/ubuntu/"
+
+      # SSH into EC2 and deploy Docker Compose
+      - name: Deploy Docker Compose to EC2
+        uses: appleboy/ssh-action@v0.1.4
+        with:
+          host: ${{ secrets.EC2_HOST }}
+          username: ${{ secrets.EC2_USERNAME }}
+          key: ${{ secrets.EC2_PRIVATE_KEY }}
+          envs: GITHUB_SHA
+          script: |
+            # SSH into EC2 server
+
+            # Navigate to the directory containing docker-compose.yml
+            cd $HOME
+            
+            docker-compose down --rmi all
+  
+            # Stop and remove specific containers (except nginx)
+            docker-compose stop backend redis
+            docker-compose rm -f 
+            docker-compose rmi $(docker images -f "dangling=true" -q)
+  
+            # Log in to Amazon ECR again (in case the login is expired after image removal)
+            aws ecr get-login-password --region ${{ env.AWS_REGION }} | docker login --username AWS --password-stdin ${{ env.AWS_ECR_REGISTRY }}
+  
+            # Pull the built Docker image from ECR on the EC2 server (excluding nginx)
+            docker-compose pull ${{ env.AWS_ECR_REGISTRY }}/${{ env.AWS_ECR_REPOSITORY }}:$ECR_TAG
+  
+            # Pull the Redis image from ECR on the EC2 server (excluding nginx)
+            docker-compose pull ${{ env.AWS_ECR_REGISTRY }}/${{ env.AWS_ECR_REPOSITORY_REDIS }}:$REDIS_IMAGE_TAG
+  
+            # Deploy Docker Compose
+            docker-compose up -d
+
+      # Clear artifacts after deployment
+      - name: Clear artifacts
+        if: always()
+        uses: geekyeggo/delete-artifact@v2
+        with:
+          name: bootJar-artifact
+
+      # Notify Slack on successful deployment
+      - name: Notify Success to Slack
+        uses: 8398a7/action-slack@v3
+        with:
+          status: success
+          author_name: www-be
+          fields: repo,message,commit,author,action,eventName,ref,workflow,job,took
+          if_mention: never
+        env:
+          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}

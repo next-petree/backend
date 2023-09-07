@@ -1,0 +1,41 @@
+{
+  "POST - http://localhost:8010/mainBreeds/1" :
+  [
+    {
+      "feature": "푸들인데 흰색임",
+      "size": "SMALL",
+      "type": "푸들"
+    },
+    {
+      "feature": "시끄러움",
+      "size": "LARGE",
+      "type": "푸들"
+    }
+  ],
+  "POST - http://localhost:8010/mainBreeds/2" :
+  [
+    {
+      "feature": "조용함",
+      "size": "SMALL",
+      "type": "말티즈"
+    },
+    {
+      "feature": "순함",
+      "size": "LARGE",
+      "type": "말티즈"
+    }
+  ],
+  "POST - http://localhost:8010/mainBreeds/2" :
+  [
+    {
+      "feature": "조용함",
+      "size": "SMALL",
+      "type": "말티즈"
+    },
+    {
+      "feature": "순함",
+      "size": "LARGE",
+      "type": "말티즈"
+    }
+  ]
+}

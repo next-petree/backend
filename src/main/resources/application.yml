@@ -1,0 +1,43 @@
+# 기본을 dev로 #include: dev, secret
+spring:
+  profiles:
+    # include: dev, secret
+    active: prod
+  security:
+    user:
+      name: next
+      password: 1234
+  # spring banner off
+  main:
+    banner-mode: "off"
+
+  mvc:
+    pathmatch:
+      matching-strategy: ant_path_matcher
+    static-path-pattern: /templates/**
+    resources:
+      static-locations: classpath:/templates/
+
+springdoc:
+  version: 'v1'
+  api-docs:
+    groups:
+      enabled: true
+  swagger-ui:
+    path: /swagger-ui.html
+    display-request-duration: true
+    groups-order: DESC
+    operationsSorter: method 
+    disable-swagger-default-url: true
+  show-actuator: true
+  packages-to-scan:
+    - com.example.petree.domain.matching.controller
+    - com.example.petree.domain.dog.controller
+    - com.example.petree.domain.notification.controller
+    - com.example.petree.domain.member.controller
+    - com.example.petree.global.web.kakao_token.controller
+    - com.example.petree.domain.breeder.controller
+    - com.example.petree.domain.main_breed.controller
+    - com.example.petree.domain.basic_test.controller
+
+
