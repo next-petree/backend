@@ -164,5 +164,5 @@ jobs:
           author_name: www-be
           fields: repo,message,commit,author,action,eventName,ref,workflow,job,took
           if_mention: never
-        env:    
+        env:   
           SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
