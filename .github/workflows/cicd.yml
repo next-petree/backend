@@ -120,7 +120,7 @@ jobs:
       - name: Deploy Docker Compose to EC2
         uses: appleboy/ssh-action@v0.1.4
         with:
-          host: ${{ secrets.EC2_HOST }}  
+          host: ${{ secrets.EC2_HOST }}
           username: ${{ secrets.EC2_USERNAME }}
           key: ${{ secrets.EC2_PRIVATE_KEY }}
           envs: GITHUB_SHA
@@ -129,6 +129,13 @@ jobs:
 
             # Navigate to the directory containing docker-compose.yml
             cd $HOME
+            
+            docker-compose down --rmi all
+            
+            # Stop and remove specific containers (except nginx)
+            docker-compose stop backend redis
+            docker-compose rm -f 
+            docker-compose rmi $(docker images -f "dangling=true" -q)
   
             # Log in to Amazon ECR again (in case the login is expired after image removal)
             aws ecr get-login-password --region ${{ env.AWS_REGION }} | docker login --username AWS --password-stdin ${{ env.AWS_ECR_REGISTRY }}
