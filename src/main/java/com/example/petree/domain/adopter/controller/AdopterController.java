@@ -42,7 +42,7 @@ import java.util.List;
 @RequestMapping("/adopter")
 @Tag(name = "분양희망자 회원, 마이페이지 프로필관리의 주거환경", description = "분양희망자 회원, 마이페이지 프로필관리의 주거환경 관련 API")
 public class AdopterController {
-
+         
     private final AdopterService adopterService;
     private final Response response;
     private final AdopterRepository adopterRepository;
