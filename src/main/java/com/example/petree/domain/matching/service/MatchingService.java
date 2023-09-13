@@ -5,9 +5,7 @@ import com.example.petree.domain.breeder.repository.BreederRepository;
 import com.example.petree.domain.dog.domain.Dog;
 import com.example.petree.domain.dog.domain.Status;
 import com.example.petree.domain.dog.repository.DogRepository;
-import com.example.petree.domain.matching.domain.Matching;
-import com.example.petree.domain.matching.domain.MatchingApproval;
-import com.example.petree.domain.matching.domain.Pledge;
+import com.example.petree.domain.matching.domain.*;
 import com.example.petree.domain.matching.dto.*;
 import com.example.petree.domain.matching.repository.*;
 import com.example.petree.domain.adopter.domain.Adopter;
@@ -20,7 +18,9 @@ import com.example.petree.global.util.FileUtil;
 import com.example.petree.global.util.S3Util;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -84,15 +84,30 @@ public class MatchingService {
      * 브리더의 분양 신청 리스트(수신)를 가져오는 서비스 메소드
      * @param pageable 컨트롤러에서 받은 Default Pageable 객체
      * @param breeder 대상 브리더 엔티티
-     * @param keyword 검색어(이메일 or 닉네임) 키워드
      * @return
      */
-    public ResponseEntity<?> getMatchingsOfBreeder(Pageable pageable, Member breeder, String keyword) {
+    public ResponseEntity<?> getMatchingsOfBreeder(Pageable pageable, Member breeder, Search search) {
 
         // Matching 엔티티 중 현재 브리더와 연관되었으며, 검색 키워드(있다면)가 이메일이나 닉네임에 포함되는 엔티티만 조회하는 specification 생성
+        /*Specification<Matching> spec = Specification
+                .where(MatchingSpecification.filterByMember(breeder, Role.BREEDER))
+                .and(MatchingSpecification.hasEmailOrNickname(keyword, Role.BREEDER));*/
         Specification<Matching> spec = Specification
                 .where(MatchingSpecification.filterByMember(breeder, Role.BREEDER))
-                .and(MatchingSpecification.hasEmailOrNickname(keyword, Role.BREEDER));
+                .and(MatchingSpecification.hasSearchFilter(search, Role.BREEDER));
+
+        /*if (SearchType.name.equals(searchType)) {
+            spec = spec.and(MatchingSpecification.hasEmail(keyword, Role.BREEDER));
+        } else if (SearchType.type.equals(searchType)) {
+            spec = spec.and(MatchingSpecification.hasNickname(keyword, Role.BREEDER));
+        }*/
+        /*if (SearchType.name.equals(searchType)) {
+            spec = spec.and(MatchingSpecification.hasDogName(keyword, Role.BREEDER));
+        } else if (SearchType.type.equals(searchType)) {
+            spec = spec.and(MatchingSpecification.hasDogType(keyword, Role.BREEDER));
+        }*/
+
+        pageable = PageRequest.of(pageable.getPageNumber(), pageable.getPageSize(), Sort.by(Sort.Direction.DESC, "submitDate"));
 
         // 위에서 만든 specification을 이용하여 조건을 만족하는 Matcing 엔티티 조회
         Page<Matching> matchings = matchingRepository.findAll(spec, pageable);
@@ -108,15 +123,19 @@ public class MatchingService {
      * 분양 희망자의 분양 신청 리스트(수신)를 가져오는 서비스 메소드
      * @param pageable 컨트롤러에서 받은 Default Pageable 객체
      * @param adopter 대상 브리더 엔티티
-     * @param keyword 검색어(이메일 or 닉네임) 키워드
      * @return
      */
-    public ResponseEntity<?> getMatchingsOfAdopter(Pageable pageable, Member adopter, String keyword) {
+    public ResponseEntity<?> getMatchingsOfAdopter(Pageable pageable, Member adopter, Search search) {
 
         // Matching 엔티티 중 현재 분양 희망자와 연관되었으며, 검색 키워드(있다면)가 이메일이나 닉네임에 포함되는 엔티티만 조회하는 specification 생성
+        /*Specification<Matching> spec = Specification
+                .where(MatchingSpecification.filterByMember(adopter, Role.ADOPTER))
+                .and(MatchingSpecification.hasEmailOrNickname(keyword, Role.ADOPTER));*/
         Specification<Matching> spec = Specification
                 .where(MatchingSpecification.filterByMember(adopter, Role.ADOPTER))
-                .and(MatchingSpecification.hasEmailOrNickname(keyword, Role.ADOPTER));
+                .and(MatchingSpecification.hasSearchFilter(search, Role.ADOPTER));
+
+        pageable = PageRequest.of(pageable.getPageNumber(), pageable.getPageSize(), Sort.by(Sort.Direction.DESC, "submitDate"));
 
         // 위에서 만든 specification을 이용하여 조건을 만족하는 Matcing 엔티티 조회
         Page<Matching> matchings = matchingRepository.findAll(spec, pageable);
@@ -142,10 +161,12 @@ public class MatchingService {
            return response.error("해당 matchingId를 식별자로 가지는 매칭 엔티티가 존재하지 않습니다.");
         }
 
+        Pledge pledge = matching.getPledge();
+
         // dto로 가공하여 결과 반환
         return response.success(
                 HttpStatus.OK,
-                new DetailMatchingOfBreederDto(matching)
+                new DetailMatchingOfBreederDto(matching, pledge)
         );
     }
 
@@ -189,12 +210,21 @@ public class MatchingService {
         matchingRepository.save(matching);
         matchingApprovalRepository.save(matchingApproval);
 
+        MatchingApprovalDto matchingApprovalDto = null;
+        if (isApproved) {
+            if (matching != null && matching.getMatchingApproval() != null && matching.getMatchingApproval().getIsApproved()) {
+                matchingApprovalDto = new MatchingApprovalDto();
+                matchingApprovalDto.setAdopterPhoneNumber(matching.getAdopter().getPhoneNumber());
+                matchingApprovalDto.setAdopterAddress(matching.getAdopter().getAddress1());
+            }
+        }
+
 //        String notificationContent = (isApproved)
 //                ? String.format("브리더(%s)가 입양 희망 요청을 수락하셨습니다.", matching.getBreeder().getNickname())
 //                : String.format("브리더(%s)가 입양 희망 요청을 거절하였습니다.", matching.getBreeder().getNickname());
 //        Notification notification = new Notification(notificationContent, LocalDateTime.now(), matching.getAdopter());
 //        notificationRepository.save(notification);
 
-        return response.success(HttpStatus.OK);
+        return response.success(HttpStatus.OK, matchingApprovalDto);
     }
 }

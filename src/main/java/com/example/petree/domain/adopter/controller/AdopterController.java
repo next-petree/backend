@@ -42,7 +42,7 @@ import java.util.List;
 @RequestMapping("/adopter")
 @Tag(name = "분양희망자 회원, 마이페이지 프로필관리의 주거환경", description = "분양희망자 회원, 마이페이지 프로필관리의 주거환경 관련 API")
 public class AdopterController {
-         
+
     private final AdopterService adopterService;
     private final Response response;
     private final AdopterRepository adopterRepository;
@@ -67,11 +67,10 @@ public class AdopterController {
     })
     public ResponseEntity<?> getEnvironments(Principal principal) {
 
-        if (principal == null) {
-            throw new MissingPrincipalException();
-        }
-
         Adopter adopter = adopterRepository.findByEmail(principal.getName()).orElse(null);
+        if(adopter == null) {
+            return response.error("로그인이 필요하거나, 분양 희망자 회원이 아닙니다.");
+        }
         List<Object> environments = adopterService.getEnvironments(adopter);
 
         return response.success(HttpStatus.OK, environments);

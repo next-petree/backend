@@ -25,6 +25,8 @@ import java.util.stream.Collectors;
 @Getter
 @NoArgsConstructor
 public class DetailMatchingOfAdopterDto {
+    @Schema(description = "강아지 대표 사진 저장 경로", example = "{강아지 사진 저장 경로}")
+    private String imgUrl;
     @Schema(description = "강아지 이름", example = "쫑이")
     private String name;
     @Schema(description = "견종명", example = "토이푸들")
@@ -33,28 +35,30 @@ public class DetailMatchingOfAdopterDto {
     private Gender gender;
     @Schema(description = "강아지 생년월일", example = "2023-07-01")
     private LocalDate birthDate;
-    @ArraySchema(schema = @Schema(description = "양육환경 이미지 저장 url 리스트", example = "{이미지 저장 url}"))
-    private List<String> matchingImgs;
-    @Schema(description = "브리더 닉네임(신청 수락 시에만 노출)", example = "김철수")
-    private String breederNickname;
-    @Schema(description = "브리더 전화번호(신청 수락 시에만 노출)", example = "010-1234-1234")
+    @Schema(description = "브리더 전화번호(신청 승인 시에만 노출)", example = "010-1234-1234")
     private String breederPhoneNumber;
-    @Schema(description = "브리더 닉네임(신청 수락 시에만 노출)", example = "경기도 수원시 ~")
+    @Schema(description = "브리더 닉네임(신청 승인 시에만 노출)", example = "경기도 수원시 ~")
     private String breederAddress;
 
     public DetailMatchingOfAdopterDto(Matching matching) {
-        this.name = matching.getDog().getName();
-        this.breedType = matching.getDog().getDogType().getName();
-        this.gender = matching.getDog().getGender();
-        this.birthDate = matching.getDog().getBirthDate();
-        if (matching.getMatchingApproval() == null || !matching.getMatchingApproval().getIsApproved()) {
-            this.breederNickname = null;
-            this.breederPhoneNumber = null;
-            this.breederAddress = null;
-        } else {
-            this.breederNickname = matching.getBreeder().getNickname();
+
+        if (matching.getMatchingApproval() != null && matching.getMatchingApproval().getIsApproved()) {
+            this.imgUrl = (matching.getDog().getDogImgFiles() != null && !matching.getDog().getDogImgFiles().isEmpty())
+                    ? matching.getDog().getDogImgFiles().get(0).getFileUrl() : null;
+            this.name = matching.getDog().getName();
+            this.breedType = matching.getDog().getDogType().getName();
+            this.gender = matching.getDog().getGender();
+            this.birthDate = matching.getDog().getBirthDate();
             this.breederPhoneNumber = matching.getBreeder().getPhoneNumber();
             this.breederAddress = matching.getBreeder().getAddress1();
+        } else {
+            this.imgUrl = null;
+            this.name = null;
+            this.breedType = null;
+            this.gender = null;
+            this.birthDate = null;
+            this.breederPhoneNumber = null;
+            this.breederAddress = null;
         }
     }
 }
