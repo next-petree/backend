@@ -2,9 +2,11 @@ package com.example.petree.domain.verification.service;
 
 
 import com.example.petree.domain.member.domain.Admin;
+import com.example.petree.domain.member.domain.Member;
 import com.example.petree.domain.member.repository.AdminRepository;
 import com.example.petree.domain.breeder.domain.Breeder;
 import com.example.petree.domain.breeder.repository.BreederRepository;
+import com.example.petree.domain.member.repository.MemberRepository;
 import com.example.petree.domain.verification.domain.*;
 import com.example.petree.domain.verification.dto.VerificationFormDto;
 import com.example.petree.domain.verification.dto.VerificationListDto;
@@ -59,7 +61,7 @@ public class VerificationService {
     private final VerificationRequestRepository verificationRequestRepository;
     private final VerificationApprovalRepository verificationApprovalRepository;
     private RequestSpecification requestSpecification;
-    private final AdminRepository adminRepository;
+    private final MemberRepository memberRepository;
     private final BreederRepository breederRepository;
     private final S3Util s3Util;
     private final FileUtil fileUtil;
@@ -76,25 +78,25 @@ public class VerificationService {
      */
 // 브리더가 관리자에게 자료를 첨부하여 인증 요청을 보내는 메소드
     @Transactional
-    public void addVerification(Breeder breeder, VerificationFormDto verificationFormDto) {
-        Admin admin = adminRepository.findById(verificationFormDto.getAdminId())
-                .orElseThrow(() -> new IllegalArgumentException("관리자에게 요청을 보낼 수 없습니다."));
+    public void addVerification(Breeder breeder, VerificationFormDto verificationFormDto, Admin admin) {
+
 
         // 새로운 요청을 생성한다.
-        VerificationRequest verificationRequest = new VerificationRequest(LocalDate.now(), breeder, admin);
+        VerificationRequest verificationRequest = new VerificationRequest(LocalDate.now(), breeder);
         // 처리 상태는 Watting으로 자동으로 저장한다.
         verificationRequest.setStatus(Status.WAITING);
 
         // 파일을 여러 개 첨부한다
-        for (MultipartFile multipartFile : verificationFormDto.getVerificationFiles()) {
-            String originalName = multipartFile.getOriginalFilename();
-            String filename = UUID.randomUUID().toString() + "." + fileUtil.extractExt(originalName);
-            String res = s3Util.upload(multipartFile, "verification-file", filename);
-            AttachedFile verificationFiles = new AttachedFile(originalName, filename, res, verificationRequest);
-            verificationRequest.addAttachedFile(verificationFiles);
-            verificationRequest.setCertification(verificationFormDto.getCertification());
-        }
+        MultipartFile multipartFile = verificationFormDto.getVerificationFiles();
+        String originalName = multipartFile.getOriginalFilename();
+        String filename = UUID.randomUUID().toString() + "." + fileUtil.extractExt(originalName);
+        String res = s3Util.upload(multipartFile, "verification-file", filename);
+        AttachedFile verificationFiles = new AttachedFile(originalName, filename, res, verificationRequest);
+        verificationRequest.addAttachedFile(verificationFiles);
+        verificationRequest.setCertification(verificationFormDto.getCertification());
 
+        // 관리자를 할당합니다.
+        verificationRequest.setAdmin(admin);
         verificationRequestRepository.save(verificationRequest);
     }
 

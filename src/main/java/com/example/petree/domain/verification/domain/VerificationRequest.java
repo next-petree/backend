@@ -50,10 +50,9 @@ public class VerificationRequest {
     @OneToMany(mappedBy = "verificationRequest",cascade = CascadeType.ALL)
     private List<AttachedFile> verificationFiles = new ArrayList<>();
 
-    public VerificationRequest(LocalDate submitDate, Breeder breeder, Admin admin) {
+    public VerificationRequest(LocalDate submitDate, Breeder breeder) {
         this.submitDate= submitDate;
         this.breeder=breeder;
-        this.admin=admin;
     }
 
     public void addAttachedFile(AttachedFile attachedFile) {

@@ -3,7 +3,11 @@ package com.example.petree.domain.verification.controller;
 import com.example.petree.domain.breeder.domain.Breeder;
 import com.example.petree.domain.breeder.repository.BreederRepository;
 
+import com.example.petree.domain.member.domain.Admin;
 import com.example.petree.domain.member.domain.Member;
+
+import com.example.petree.domain.member.domain.Role;
+import com.example.petree.domain.member.repository.AdminRepository;
 import com.example.petree.domain.member.repository.MemberRepository;
 import com.example.petree.domain.verification.domain.Certification;
 import com.example.petree.domain.verification.domain.Status;
@@ -60,6 +64,7 @@ public class VerificationController {
     private final VerificationService verificationService;
     private final BreederRepository breederRepository;
     private final MemberRepository memberRepository;
+    private final AdminRepository adminRepository;
     private final Response response;
 
 
@@ -84,10 +89,15 @@ public class VerificationController {
         }
         Breeder breeder = breederRepository.findByEmail(principal.getName()).orElse(null);
         if(breeder != null) {
-            verificationService.addVerification(breeder, verificationFormDto);
-            return response.success(HttpStatus.OK, verificationFormDto);
-        }else {
-            return response.fail(HttpStatus.FORBIDDEN, Map.of("message", "브리더 회원이 아닙니다."));}
-
+            Admin admin =adminRepository.findByRole(Role.ADMIN);
+            if (admin != null) {
+                verificationService.addVerification(breeder, verificationFormDto, admin);
+                return response.success(HttpStatus.OK, verificationFormDto);
+            } else {
+                return response.fail(HttpStatus.FORBIDDEN, Map.of("message", "관리자를 찾을 수 없습니다."));
+            }
+        } else {
+            return response.fail(HttpStatus.FORBIDDEN, Map.of("message", "브리더 회원이 아닙니다."));
+        }
     }
 }
