@@ -78,7 +78,12 @@ public class MatchingController {
                     content = @Content(schema = @Schema(implementation = ResponseSchema.ResponseSchema500.class))),
             @ApiResponse(responseCode = "400", description = "요청 파라미터 오류로 모든 요청 필드들에 대해 유효성 검사를 진행한다.\" +\n" +
                     "                            \"요청 파라미터에 대해 형식을 지키지 않은 경우, 응답 Body data에 형식에 대한 에러메시지를 상세확인할 수 있다.",
-                    content = @Content(schema = @Schema(implementation = ResponseSchema.ResponseSchema400M.class)))
+                    content = @Content(schema = @Schema(implementation = ResponseSchema.ResponseSchema400M.class))),
+            @ApiResponse(
+                    responseCode = "403",
+                    description = "분양희망자 회원이 아니라면, 접근 실패",
+                    content = @Content(schema = @Schema(implementation = ResponseSchema.ResponseSchema401.class))
+            )
     })
     public ResponseEntity<?> addMatching(
             Principal principal,
@@ -90,13 +95,19 @@ public class MatchingController {
             throw new MissingPrincipalException();
         }
 
+        Member member = memberRepository.findByEmail(principal.getName()).orElse(null);
+
         if (bindingResult.hasErrors()) {
             Map<String, String> errorMessage = ErrorResponse.createErrorMessage(bindingResult);
             return response.fail(HttpStatus.BAD_REQUEST, errorMessage);
         }
 
-        Adopter adopter = adopterRepository.findByEmail(principal.getName()).orElse(null);
-        return matchingService.addMatching(adopter, formDto);
+        if (member.getRole() == Role.ADOPTER) {
+            Adopter adopter = adopterRepository.findByEmail(principal.getName()).orElse(null);
+            return matchingService.addMatching(adopter, formDto);
+        } else{
+            return response.fail(HttpStatus.FORBIDDEN, "분양희망자 회원만 예약이 가능합니다.");
+        }
     }
 
     /**
