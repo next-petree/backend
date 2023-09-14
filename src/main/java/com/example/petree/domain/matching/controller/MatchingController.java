@@ -59,7 +59,7 @@ public class MatchingController {
     private final MemberRepository memberRepository;
     private final AdopterRepository adopterRepository;
     private final Response response;
-
+     
     /**
      *
      * @param principal Principal 객체
