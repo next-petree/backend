@@ -10,6 +10,7 @@ import com.example.petree.domain.breeder.dto.BreederDto;
 import com.example.petree.domain.breeder.repository.BreederRepository;
 import com.example.petree.domain.dog.domain.Dog;
 import com.example.petree.domain.dog.dto.PossessionDogDto;
+import com.example.petree.domain.dog.dto.SimpleDogDto;
 import com.example.petree.domain.main_breed.domain.DogType;
 import com.example.petree.domain.main_breed.domain.MainBreed;
 import com.example.petree.domain.main_breed.dto.MainBreedDto;
@@ -259,8 +260,8 @@ public class BreederService {
             }
             breederDetailDto.setMainBreedDtoResponseList(mainBreedDtoResponses);
 
-            List<PossessionDogDto> possessionDogDtos = getPossessionDogDtos(member);
-            breederDetailDto.setPossessionDogDtos(possessionDogDtos);
+            List<SimpleDogDto> simpleDogDtos = getSimpleDogDtos(member);
+            breederDetailDto.setSimpleDogDtos(simpleDogDtos);
 
             return breederDetailDto;
         }
@@ -275,23 +276,27 @@ public class BreederService {
      * @return
      */
 
-    private List<PossessionDogDto> getPossessionDogDtos(Member member) {
+    private List<SimpleDogDto> getSimpleDogDtos(Member member) {
         if (member instanceof Breeder) {
             Breeder breeder = (Breeder) member;
             List<Dog> dogs = breeder.getDogs();
 
-            List<PossessionDogDto> possessionDogDtos = new ArrayList<>();
+            List<SimpleDogDto> simpleDogDtos = new ArrayList<>();
             for (Dog dog : dogs) {
-                PossessionDogDto dto = PossessionDogDto.builder()
+                SimpleDogDto dto = SimpleDogDto.builder()
                         .id(dog.getId())
+                        .type(dog.getDogType().getName())
                         .gender(dog.getGender())
                         .birthDate(dog.getBirthDate())
                         .name(dog.getName())
-                        .management(dog.getManagement())
+                        .status(dog.getStatus())
+                        .imgUrl(dog.getDogImgFiles().get(0).getFileUrl())
+                        .breederNickName(dog.getBreeder().getNickname())
+                        .isBreederVerified(dog.getBreeder().getIsVerified())
                         .build();
-                possessionDogDtos.add(dto);
+                simpleDogDtos.add(dto);
             }
-            return possessionDogDtos;
+            return simpleDogDtos;
         }
         return Collections.emptyList();
     }

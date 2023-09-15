@@ -120,37 +120,26 @@ public class DogService {
      * @date 2023-08-29
      * @description : 검색 조건 추가 후 견종으로 검색하기 위해 수정
      */
-
     @Transactional(readOnly = true)
-    public Page<SimpleDogDto> getDogsOfBreeder(Pageable pageable, Breeder breeder,String searchType ,String keyword) {
+    public Page<SimpleDogDto> getDogsOfBreeder(Pageable pageable, Breeder breeder, String searchType, String keyword) {
+
+        Specification<Dog> spec = Specification.where(DogSpecification.filterByBreeder(breeder));
 
         if (SearchType.NAME.getSearchType().equals(searchType)) {
-            Specification<Dog> spec = Specification
-                    .where(DogSpecification.filterByBreeder(breeder))
-                    .and(DogSpecification.hasDogNameKeyword(keyword));
-
-            Page<Dog> dogs = dogRepository.findAll(spec, pageable);
-
-            return dogs.map(SimpleDogDto::new);
-
-        } else if(SearchType.TYPE.getSearchType().equals(searchType)) {
-            Specification<Dog> spec = Specification
-                    .where(DogSpecification.filterByBreeder(breeder))
-                    .and(DogSpecification.hasDogTypeKeyword(keyword));
-
-            Page<Dog> dogs = dogRepository.findAll(spec, pageable);
-
-            return dogs.map(SimpleDogDto::new);
-        } else {
-            Specification<Dog> spec = Specification
-                    .where(DogSpecification.filterByBreeder(breeder))
-                            .and(DogSpecification.latestCreate());
-
-            Page<Dog> dogs = dogRepository.findAll(spec,pageable);
-
-            return  dogs.map(SimpleDogDto ::new);
+            spec = spec.and(DogSpecification.hasDogNameKeyword(keyword));
+        } else if (SearchType.TYPE.getSearchType().equals(searchType)) {
+            spec = spec.and(DogSpecification.hasDogTypeKeyword(keyword));
+        } else if (SearchType.WHOLE.getSearchType().equals(searchType)){
+            spec = spec.and(DogSpecification.latestCreate());
+        } else{
+            spec = spec.and(DogSpecification.latestCreate());
         }
+
+        Page<Dog> dogs = dogRepository.findAll(spec, pageable);
+
+        return dogs.map(SimpleDogDto::new);
     }
+
 
     @Transactional(readOnly = true)
     public PossessionDogDto getDogToUpdate(Long id) {

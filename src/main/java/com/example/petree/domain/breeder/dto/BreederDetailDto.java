@@ -1,6 +1,7 @@
 package com.example.petree.domain.breeder.dto;
 
 import com.example.petree.domain.dog.dto.PossessionDogDto;
+import com.example.petree.domain.dog.dto.SimpleDogDto;
 import com.example.petree.domain.main_breed.dto.MainBreedDto;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AllArgsConstructor;
@@ -45,5 +46,5 @@ public class BreederDetailDto {
     @Schema(description = "프로필 사진 저장 경로", example = "{프로필 사진 저장 경로}")
     private String profileImgUrl;
     @Schema(description = "보유견종 목록")
-    private List<PossessionDogDto> possessionDogDtos;
+    private List<SimpleDogDto> simpleDogDtos;
 }

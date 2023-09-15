@@ -45,10 +45,10 @@ public class DetailDogDto {
     private Long breederId;
     @Schema(description = "해당 강아지 소유 브리더 닉네임", example = "푸들조아")
     private String breederNickName;
-    @Schema(description = "보유 견종 분양 진행 상태",example = "AVAILABLE")
-    private Status status;
     @Schema(description = "해당 강아지 소유 브리더 인증 여부(true/false)", example = "true")
     private Boolean isBreederVerified;
+    @Schema(description = "보유 견종 입양 진행 상태",example = "AVAILABLE")
+    private Status status;
     // TODO: 브리더 팔로우 여부 추후에 추가
     @ArraySchema(schema = @Schema(description = "강아지 이미지 저장 url 리스트", example = "{이미지 저장 url}"))
     private List<String> imagesUrl;

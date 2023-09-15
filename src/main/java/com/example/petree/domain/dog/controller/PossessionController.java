@@ -89,10 +89,16 @@ public class PossessionController {
     })
     public ResponseEntity<?> getDogs(
             Principal principal,
-            @Parameter(hidden = true)
+            @Parameter(description = "페이지",example = "{\n" +
+                    "  \"page\": 0,\n" +
+                    "  \"size\": 8,\n" +
+                    "  \"sort\": [\n" +
+                    "    \"id\"\n" +
+                    "  ]\n" +
+                    "}")
             @PageableDefault(page = 0, size = 8, sort = "id", direction = Sort.Direction.DESC) Pageable pageable,
             @Parameter(description = "검색 종류",example = "견종 or 이름 or 전체 ")
-            @RequestParam(value = "searchType") String seachType,
+            @RequestParam(value = "searchType", defaultValue = "전체") String seachType,
             @Parameter(description = "검색 키워드", example = "푸들 / 쫑이/")
             @RequestParam(value = "keyword", defaultValue = "") String keyword) {
 
@@ -100,6 +106,10 @@ public class PossessionController {
         Page<SimpleDogDto> dtos = dogService.getDogsOfBreeder(pageable, breeder, seachType,keyword);
         return response.success(HttpStatus.OK, dtos);
     }
+
+
+
+
     @GetMapping(value = "/{id}")
     @Operation(
             summary = "수정에 필요한 보유 견종 상세 조회 ",
