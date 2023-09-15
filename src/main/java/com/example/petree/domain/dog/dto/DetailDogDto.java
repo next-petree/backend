@@ -3,6 +3,7 @@ package com.example.petree.domain.dog.dto;
 import com.example.petree.domain.dog.domain.Dog;
 import com.example.petree.domain.dog.domain.DogImgFile;
 import com.example.petree.domain.dog.domain.Gender;
+import com.example.petree.domain.dog.domain.Status;
 import io.swagger.v3.oas.annotations.media.ArraySchema;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Getter;
@@ -44,6 +45,8 @@ public class DetailDogDto {
     private Long breederId;
     @Schema(description = "해당 강아지 소유 브리더 닉네임", example = "푸들조아")
     private String breederNickName;
+    @Schema(description = "보유 견종 분양 진행 상태",example = "AVAILABLE")
+    private Status status;
     @Schema(description = "해당 강아지 소유 브리더 인증 여부(true/false)", example = "true")
     private Boolean isBreederVerified;
     // TODO: 브리더 팔로우 여부 추후에 추가
@@ -60,6 +63,7 @@ public class DetailDogDto {
         this.breederId = dog.getBreeder().getId();
         this.breederNickName = dog.getBreeder().getNickname();
         this.isBreederVerified = dog.getBreeder().getIsVerified();
+        this.status = dog.getStatus();
         this.imagesUrl = dog.getDogImgFiles()
                 .stream()
                 .map(DogImgFile::getFileUrl)
