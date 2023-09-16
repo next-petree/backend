@@ -12,6 +12,7 @@ import com.example.petree.domain.member.repository.MemberRepository;
 import com.example.petree.domain.verification.domain.Certification;
 import com.example.petree.domain.verification.domain.Status;
 import com.example.petree.domain.verification.dto.VerificationFormDto;
+import com.example.petree.domain.verification.dto.VerificationFromResponseDto;
 import com.example.petree.domain.verification.schema.VerificationListDtoSchema;
 import com.example.petree.domain.verification.schema.VerificationSchema;
 import com.example.petree.domain.verification.service.VerificationService;
@@ -91,8 +92,8 @@ public class VerificationController {
         if(breeder != null) {
             Admin admin =adminRepository.findByRole(Role.ADMIN);
             if (admin != null) {
-                verificationService.addVerification(breeder, verificationFormDto, admin);
-                return response.success(HttpStatus.OK, verificationFormDto);
+                VerificationFromResponseDto verification = verificationService.addVerification(breeder, verificationFormDto, admin);
+                return response.success(HttpStatus.OK, verification);
             } else {
                 return response.fail(HttpStatus.FORBIDDEN, Map.of("message", "관리자를 찾을 수 없습니다."));
             }

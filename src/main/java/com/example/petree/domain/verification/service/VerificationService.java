@@ -9,6 +9,7 @@ import com.example.petree.domain.breeder.repository.BreederRepository;
 import com.example.petree.domain.member.repository.MemberRepository;
 import com.example.petree.domain.verification.domain.*;
 import com.example.petree.domain.verification.dto.VerificationFormDto;
+import com.example.petree.domain.verification.dto.VerificationFromResponseDto;
 import com.example.petree.domain.verification.dto.VerificationListDto;
 import com.example.petree.domain.verification.repository.RequestSpecification;
 import com.example.petree.domain.verification.repository.VerificationApprovalRepository;
@@ -32,6 +33,8 @@ import java.time.LocalDateTime;
 import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
+
+import static com.example.petree.domain.member.dto.ProfileDto.createProfileImgResponseDTO;
 
 /**
  * packageName    : com.example.petree.domain.verification.service
@@ -78,7 +81,7 @@ public class VerificationService {
      */
 // 브리더가 관리자에게 자료를 첨부하여 인증 요청을 보내는 메소드
     @Transactional
-    public void addVerification(Breeder breeder, VerificationFormDto verificationFormDto, Admin admin) {
+    public VerificationFromResponseDto addVerification(Breeder breeder, VerificationFormDto verificationFormDto, Admin admin) {
 
 
         // 새로운 요청을 생성한다.
@@ -98,6 +101,8 @@ public class VerificationService {
         // 관리자를 할당합니다.
         verificationRequest.setAdmin(admin);
         verificationRequestRepository.save(verificationRequest);
+
+        return VerificationFromResponseDto.createVerificationFromResponseDto(verificationFormDto);
     }
 
     /**
