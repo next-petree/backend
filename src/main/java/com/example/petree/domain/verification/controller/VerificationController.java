@@ -79,6 +79,11 @@ public class VerificationController {
                     content = @Content(schema = @Schema(implementation = VerificationSchema.Verification200.class))),
             @ApiResponse(responseCode = "400", description = "브리더 인증 요청은 브리더에게만 권한이 있습니다.",
                     content = @Content(schema = @Schema(implementation = ResponseSchema.ResponseSchema400M.class))),
+            @ApiResponse(
+                    responseCode = "401",
+                    description = "로그인을 하지 않았다면, 프로필 정보 반환 실패",
+                    content = @Content(schema = @Schema(implementation = ResponseSchema.ResponseSchema401.class))
+            )
     })
     public ResponseEntity<?> addVerification(
             Principal principal,
@@ -89,15 +94,16 @@ public class VerificationController {
             throw new MissingPrincipalException();
         }
         Breeder breeder = breederRepository.findByEmail(principal.getName()).orElse(null);
+        Long breederId = breeder.getId();
         if(breeder != null) {
             Admin admin =adminRepository.findByRole(Role.ADMIN);
-            if (admin != null) {
-                boolean alreadyUploaded = verificationService.isAlreadyUploaded(breeder, verificationFormDto.getCertification());
+            boolean alreadyUploaded = verificationService.isAlreadyUploaded(breeder, verificationFormDto.getCertification());
 
+            if (admin != null) {
                 if (alreadyUploaded) {
                     return response.fail(HttpStatus.OK, Map.of("message", "이미 해당 자격증을 업로드했습니다."));
                 } else {
-                    VerificationFromResponseDto verification = verificationService.addVerification(breeder, verificationFormDto, admin);
+                    VerificationFromResponseDto verification = verificationService.addVerification(breeder,verificationFormDto, admin);
                     return response.success(HttpStatus.OK, verification);
                 }
             } else {

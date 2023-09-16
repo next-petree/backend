@@ -52,7 +52,7 @@ public class VerificationRequest {
 
     public VerificationRequest(LocalDate submitDate, Breeder breeder) {
         this.submitDate= submitDate;
-        this.breeder=breeder;
+        this.breeder= breeder;
     }
 
     public void addAttachedFile(AttachedFile attachedFile) {

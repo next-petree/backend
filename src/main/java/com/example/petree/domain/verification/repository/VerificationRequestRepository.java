@@ -15,7 +15,6 @@ public interface VerificationRequestRepository extends JpaRepository<Verificatio
 
     VerificationRequest findByBreederAndCertification(Breeder breeder, Certification certification);
 
-
     /**
      * @author 이지수
      * @date 2023-08-08

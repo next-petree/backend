@@ -3,6 +3,7 @@ package com.example.petree.domain.verification.service;
 
 import com.example.petree.domain.member.domain.Admin;
 import com.example.petree.domain.member.domain.Member;
+import com.example.petree.domain.member.dto.ProfileDto;
 import com.example.petree.domain.member.repository.AdminRepository;
 import com.example.petree.domain.breeder.domain.Breeder;
 import com.example.petree.domain.breeder.repository.BreederRepository;
@@ -75,7 +76,6 @@ public class VerificationService {
         return existingRequest != null;
     }
 
-
     /**
      * @author 이지수
      * @date 2023-08-07
@@ -87,11 +87,10 @@ public class VerificationService {
      */
 // 브리더가 관리자에게 자료를 첨부하여 인증 요청을 보내는 메소드
     @Transactional
-    public VerificationFromResponseDto addVerification(Breeder breeder, VerificationFormDto verificationFormDto, Admin admin) {
-
+    public VerificationFromResponseDto addVerification(Breeder breeder,VerificationFormDto verificationFormDto, Admin admin) {
 
         // 새로운 요청을 생성한다.
-        VerificationRequest verificationRequest = new VerificationRequest(LocalDate.now(), breeder);
+        VerificationRequest verificationRequest = new VerificationRequest(LocalDate.now(),breeder);
         // 처리 상태는 Watting으로 자동으로 저장한다.
         verificationRequest.setStatus(Status.WAITING);
 
@@ -108,7 +107,7 @@ public class VerificationService {
         verificationRequest.setAdmin(admin);
         verificationRequestRepository.save(verificationRequest);
 
-        return VerificationFromResponseDto.createVerificationFromResponseDto(verificationFormDto);
+        return VerificationFromResponseDto.createVerificationFromResponseDto(verificationRequest);
     }
 
     /**

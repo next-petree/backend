@@ -19,9 +19,6 @@ import java.util.List;
  */
 @Data
 public class VerificationFormDto {
-    @Schema(description = "브리더 식별자 id")
-    //@JsonProperty("breeder_id")
-    private Long breederId;
 
     @Schema(description = "자격증 분류 선택 (반려동물종합관리사 OR 반려동물행동교정사)",example = "COMPREHENSIVE_PET_MANAGER")
     private Certification certification;
