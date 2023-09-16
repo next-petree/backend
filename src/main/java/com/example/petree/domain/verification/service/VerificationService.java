@@ -70,6 +70,12 @@ public class VerificationService {
     private final FileUtil fileUtil;
     private final Response response;
 
+    public boolean isAlreadyUploaded(Breeder breeder, Certification certification) {
+        VerificationRequest existingRequest = verificationRequestRepository.findByBreederAndCertification(breeder, certification);
+        return existingRequest != null;
+    }
+
+
     /**
      * @author 이지수
      * @date 2023-08-07

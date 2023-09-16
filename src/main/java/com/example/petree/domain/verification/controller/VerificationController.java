@@ -92,8 +92,14 @@ public class VerificationController {
         if(breeder != null) {
             Admin admin =adminRepository.findByRole(Role.ADMIN);
             if (admin != null) {
-                VerificationFromResponseDto verification = verificationService.addVerification(breeder, verificationFormDto, admin);
-                return response.success(HttpStatus.OK, verification);
+                boolean alreadyUploaded = verificationService.isAlreadyUploaded(breeder, verificationFormDto.getCertification());
+
+                if (alreadyUploaded) {
+                    return response.fail(HttpStatus.OK, Map.of("message", "이미 해당 자격증을 업로드했습니다."));
+                } else {
+                    VerificationFromResponseDto verification = verificationService.addVerification(breeder, verificationFormDto, admin);
+                    return response.success(HttpStatus.OK, verification);
+                }
             } else {
                 return response.fail(HttpStatus.FORBIDDEN, Map.of("message", "관리자를 찾을 수 없습니다."));
             }

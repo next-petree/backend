@@ -1,8 +1,8 @@
 # 기본을 dev로 #include: dev, secret
 spring:
   profiles:
-    # include: dev, secret
-    active: prod
+    include: dev, secret
+    # active: prod
   security:
     user:
       name: next

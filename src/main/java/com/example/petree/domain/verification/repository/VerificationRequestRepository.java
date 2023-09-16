@@ -1,6 +1,7 @@
 package com.example.petree.domain.verification.repository;
 
 import com.example.petree.domain.breeder.domain.Breeder;
+import com.example.petree.domain.verification.domain.Certification;
 import com.example.petree.domain.verification.domain.Status;
 import com.example.petree.domain.verification.domain.VerificationRequest;
 import org.springframework.data.domain.Page;
@@ -11,6 +12,10 @@ import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 
 import java.util.List;
 public interface VerificationRequestRepository extends JpaRepository<VerificationRequest, Long>, JpaSpecificationExecutor<VerificationRequest> {
+
+    VerificationRequest findByBreederAndCertification(Breeder breeder, Certification certification);
+
+
     /**
      * @author 이지수
      * @date 2023-08-08
