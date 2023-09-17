@@ -95,7 +95,8 @@ public class BreederRepositoryImpl implements BreederRepositoryCustom {
             ));
         }
 
-        query.where(conditions).orderBy(qBreeder.id.asc());
+        query.where(conditions)
+                .orderBy(distance.asc());
 
         log.info("쿼리 실행 완료");
         log.info("요청한 검색 정보: " + breederSearch);
