@@ -40,6 +40,8 @@ public class SimpleMatchingOfAdopterDto {
     private Boolean isProcessed;
     @Schema(description = "브리더가 해당 보유견종을 '입양완료' 상태로 변경했다면 true. '후기쓰기 버튼을 활성화하는데 사용", example = "true")
     private Boolean isDone;
+    @Schema(description = "강아지 식별 id", example = "1")
+    private Long dogId;
 
     public SimpleMatchingOfAdopterDto(Matching matching) {
         this.matchingId = matching.getId();
@@ -51,5 +53,6 @@ public class SimpleMatchingOfAdopterDto {
         this.isProcessed = matching.getMatchingApproval() != null ?
                 matching.getMatchingApproval().getIsApproved() : null;
         this.isDone = matching.getDog().getStatus() == Status.DONE;
+        this.dogId = matching.getDog().getId();
     }
 }
