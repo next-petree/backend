@@ -1,6 +1,7 @@
 package com.example.petree.domain.matching.schema;
 
 import com.example.petree.domain.dog.dto.DetailDogDto;
+import com.example.petree.domain.matching.dto.SimpleMatchingOfAdopterDto;
 import com.example.petree.domain.matching.dto.SimpleMatchingOfBreederDto;
 import com.example.petree.global.JsendStatus;
 import com.example.petree.global.ResponseSchema;
@@ -26,7 +27,7 @@ public class MatchingsOfBreederSchema{
     public static class MatchingsSchema200 {
         @Schema(example = "SUCCESS")
         private JsendStatus status;
-        private Page<SimpleMatchingOfBreederDto> data;
+        private Page<SimpleMatchingOfAdopterDto> data;
         @Schema(example = "")
         private String msg;
     }

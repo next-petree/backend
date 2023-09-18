@@ -127,7 +127,7 @@ public class MatchingController {
             + "n번째 페이지 요청 시에는 query param으로 'page=n'같은 형식으로 요청하면 됨(0부터 시작)"
     )
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "매칭 조회 성공(현재 예시는 브리더가 조회한 상황, 입양희망자가 조회 시 'adopter' 부분을 'breeder'로 치환)",
+            @ApiResponse(responseCode = "200", description = "매칭 조회 성공(현재 예시는 분양희망자가 조회한 상황, 브리더가 조회 시 'adopter' 부분을 'breeder'로 치환)",
                     content = @Content(schema = @Schema(implementation = MatchingsOfBreederSchema.MatchingsSchema200.class)))
     })
     public ResponseEntity<?> getMatchings(
