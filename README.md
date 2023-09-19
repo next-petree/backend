@@ -90,7 +90,10 @@
 
 ## 💠 아키텍쳐 
 ---
-<img src="./petree-img/펫트리 아키텍쳐.jpg" >
+<img src="./petree-img/아키텍쳐.png" >
+
+## 🖥️프로젝트 미리보기
+---
 
 ## 🏷️ Backend 폴더 구조
 ---
