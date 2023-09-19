@@ -24,10 +24,7 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestHeader;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletResponse;
 
@@ -50,6 +47,7 @@ import static org.bouncycastle.asn1.cms.CMSAttributes.contentType;
 @Slf4j
 @RestController
 @RequiredArgsConstructor
+@RequestMapping("/api")
 @Component
 @Tag(name = "회원관리 API", description = "회원관리 관련 API")
 public class KakaoTokenController {

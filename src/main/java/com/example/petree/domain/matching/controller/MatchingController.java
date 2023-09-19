@@ -52,7 +52,7 @@ import java.util.Map;
 @RequiredArgsConstructor
 @Slf4j
 @Tag(name = "마이페이지 내 분양신청내역확인", description = "마이페이지 내 분양신청내역확인 관련 API")
-@RequestMapping("/me/matchings")
+@RequestMapping("/api/me/matchings")
 public class MatchingController {
 
     private final MatchingService matchingService;

@@ -42,6 +42,7 @@ import java.security.Principal;
 import java.util.Map;
 
 @Tag(name = "회원관리 API", description = "회원관리 관련 API")
+@RequestMapping("/api")
 @RestController
 @Slf4j
 @RequiredArgsConstructor

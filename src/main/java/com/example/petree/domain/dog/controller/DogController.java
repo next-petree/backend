@@ -49,7 +49,7 @@ import java.util.Map;
  */
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/dogs")
+@RequestMapping("/api/dogs")
 @Tag(name = "강아지 분양하기", description = "강아지 분양 관련 API")
 public class DogController {
 

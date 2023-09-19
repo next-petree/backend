@@ -68,7 +68,7 @@ import java.util.Map;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/breeder/dogs")
+@RequestMapping("/api/breeder/dogs")
 @Tag(name = "브리더 회원, 마이페이지 보유견종관리", description = "브리더 회원, 마이페이지 보유견종관리 API")
 public class PossessionController {
 

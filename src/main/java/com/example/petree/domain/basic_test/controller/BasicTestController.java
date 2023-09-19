@@ -42,7 +42,7 @@ import java.security.Principal;
 @RestController
 @RequiredArgsConstructor
 @Tag(name = "기초지식테스트", description = "기초지식테스트 조회/채점 및 해설제공 API")
-@RequestMapping("/basic-test")
+@RequestMapping("/api/basic-test")
 public class BasicTestController {
 
     private final BasicTestService basicTestService;
