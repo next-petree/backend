@@ -148,7 +148,7 @@ public class MemberController {
      * @return
      */
 
-    @GetMapping("/nickname/check")
+    @PostMapping("/nickname/check")
     @Operation(
             summary = "닉네임 중복 확인",
             description = "회원가입시 닉네임 중복 여부를 판단할 수 있다."
@@ -173,7 +173,7 @@ public class MemberController {
      * @return
      */
 
-    @GetMapping("/email/check")
+    @PostMapping("/email/check")
     @Operation(
             summary = "아이디(이메일) 중복 확인",
             description = "회원가입시 아이디(이메일) 중복 여부를 판단할 수 있다."
