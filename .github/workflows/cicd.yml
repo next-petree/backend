@@ -131,7 +131,7 @@ jobs:
             cd $HOME
             
             docker-compose down --rmi all
-            
+              
             # Stop and remove specific containers (except nginx)
             docker-compose stop backend redis
             docker-compose rm -f 

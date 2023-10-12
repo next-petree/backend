@@ -15,7 +15,7 @@ import lombok.ToString;
  * -----------------------------------------------------------
  * 2023-07-11        qkrtn_ulqpbq2       최초 생성
  */
-  
+
 public class KakaoTokenDto {
 
     @Builder
