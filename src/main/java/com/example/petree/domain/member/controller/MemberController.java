@@ -42,7 +42,6 @@ import java.security.Principal;
 import java.util.Map;
 
 @Tag(name = "회원관리 API", description = "회원관리 관련 API")
-@RequestMapping("/api")
 @RestController
 @Slf4j
 @RequiredArgsConstructor
@@ -148,7 +147,7 @@ public class MemberController {
      * @return
      */
 
-    @PostMapping("/nickname/check")
+    @GetMapping("/nickname/check")
     @Operation(
             summary = "닉네임 중복 확인",
             description = "회원가입시 닉네임 중복 여부를 판단할 수 있다."
@@ -173,7 +172,7 @@ public class MemberController {
      * @return
      */
 
-    @PostMapping("/email/check")
+    @GetMapping("/email/check")
     @Operation(
             summary = "아이디(이메일) 중복 확인",
             description = "회원가입시 아이디(이메일) 중복 여부를 판단할 수 있다."

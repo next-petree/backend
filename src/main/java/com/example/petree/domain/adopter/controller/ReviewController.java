@@ -50,7 +50,7 @@ import java.security.Principal;
 @RestController
 @RequiredArgsConstructor
 @Slf4j
-@RequestMapping("/api/adopter")
+@RequestMapping("/adopter")
 @Tag(name = "분양희망자 회원, 마이페이지 분양후기 관리", description = "분양희망자 회원, 마이페이지 분양후기 관리 관련 API")
 public class ReviewController {
 

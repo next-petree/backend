@@ -47,7 +47,7 @@ import java.util.Map;
 @RestController
 @RequiredArgsConstructor
 @Slf4j
-@RequestMapping("/api/me/profile")
+@RequestMapping("/me/profile")
 @Tag(name = "마이페이지 내 프로필관리", description = "마이페이지 내 프로필관리 관련 API")
 public class ProfileController {
 

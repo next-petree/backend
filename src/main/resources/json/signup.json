@@ -203,6 +203,18 @@
       }
     },
     {
+      "emailChecked" : true,
+      "nicknameChecked" : true,
+      "phoneNumberChecked" : true,
+      "email": "test14@test.com",
+      "nickname": "test4",
+      "password": "1234!",
+      "confirmPassword": "1234!",
+      "address": "경기도 구리시",
+      "phoneNumber": "010-1111-1111",
+      "role": "ADOPTER"
+    },
+    {
       "email": "test2@test.com",
       "nickname": "test2",
       "password":"1234!",

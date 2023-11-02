@@ -35,7 +35,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequiredArgsConstructor
 @Slf4j
-@RequestMapping("/api/adopters")
+@RequestMapping("/adopters")
 @Tag(name = "분양희망자 조회", description = "제3자가 보는 분양희망자 조회 API")
 public class AdoptersController {
 

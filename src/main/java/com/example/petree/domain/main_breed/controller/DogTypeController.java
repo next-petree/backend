@@ -42,7 +42,7 @@ import java.util.Map;
 @RestController
 @RequiredArgsConstructor
 @Slf4j
-@RequestMapping("/api/dog-type")
+@RequestMapping("/dog-type")
 @Tag(name = "견종 검색", description = "견종 검색")
 public class DogTypeController {
 

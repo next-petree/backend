@@ -276,6 +276,12 @@ public class DogService {
         }
 
         addImg(breeder,id,possessionDogDto);
+
+        List<DogImgFile> dogImgFiles = dogImgFileRepository.findByDogId(dog.getId());
+        if(dogImgFiles.size()<1){
+            throw new IllegalArgumentException("이미지는 최소 1개이상 등록되어 있어야합니다.");
+        }
+
         return new PossessionDogDto.UpdateDogDto(dog);
     }
 
@@ -315,14 +321,6 @@ public class DogService {
         List<String> fileNamesToDelete = possessionDogDto.getImgNameToDelete();
         if (fileNamesToDelete == null) {
             return;
-        }
-        // 이미지 파일을 삭제한 후 남아있는 이미지 파일의 갯수 계산
-        int remainingImageCount = (int) dogImgFiles.stream()
-                .filter(imgFile -> !fileNamesToDelete.contains(imgFile.getOriginalFileName()))
-                .count();
-
-        if (remainingImageCount <= 0) {
-            throw new IllegalArgumentException("최소한 한 개의 이미지 파일이 남아 있어야 합니다.");
         }
 
         for (String originalFileName : fileNamesToDelete) {

@@ -38,7 +38,7 @@ import java.util.stream.Collectors;
 @RestController
 @RequiredArgsConstructor
 @Slf4j
-@RequestMapping("/api/breeder/main-breeds")
+@RequestMapping("/breeder/main-breeds")
 @Tag(name = "브리더 회원, 마이페이지 프로필관리의 주력견종", description = "브리더 회원, 마이페이지 프로필관리의 주력견종 관련 API")
 public class MainBreedController {
 

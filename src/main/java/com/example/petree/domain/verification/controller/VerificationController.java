@@ -58,7 +58,6 @@ import java.util.Map;
  */
 
 @RestController
-@RequestMapping("/api")
 @RequiredArgsConstructor
 @Slf4j
 @Tag(name="브리더 인증하기")
