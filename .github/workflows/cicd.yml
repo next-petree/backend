@@ -130,13 +130,6 @@ jobs:
             # Navigate to the directory containing docker-compose.yml
             cd $HOME
             
-            docker-compose down --rmi all
-              
-            # Stop and remove specific containers (except nginx)
-            docker-compose stop backend redis
-            docker-compose rm -f 
-            docker-compose rmi $(docker images -f "dangling=true" -q)
-            
      
             # Log in to Amazon ECR again (in case the login is expired after image removal)
             aws ecr get-login-password --region ${{ env.AWS_REGION }} | docker login --username AWS --password-stdin ${{ env.AWS_ECR_REGISTRY }}
