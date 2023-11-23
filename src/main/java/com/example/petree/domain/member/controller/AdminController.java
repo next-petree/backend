@@ -51,7 +51,7 @@ import java.util.Map;
 @RequiredArgsConstructor
 @Slf4j
 @Tag(name="관리자 승인하기")
-@RequestMapping("/admin/verifications")
+@RequestMapping("/api/admin/verifications")
 public class AdminController {
 
     private final VerificationService verificationService;

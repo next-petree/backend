@@ -39,7 +39,7 @@ import java.util.Map;
 @RestController
 @RequiredArgsConstructor
 @Slf4j
-@RequestMapping("/me/member-info")
+@RequestMapping("/api/me/member-info")
 @Tag(name = "마이페이지 내 회원정보수정", description = "마이페이지 내 회원정보수정관련 API")
 public class MemberInfoController {
 

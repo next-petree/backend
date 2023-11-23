@@ -61,6 +61,7 @@ import java.util.Map;
 @RequiredArgsConstructor
 @Slf4j
 @Tag(name="브리더 인증하기")
+@RequestMapping("/api")
 public class VerificationController {
     private final VerificationService verificationService;
     private final BreederRepository breederRepository;

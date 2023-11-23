@@ -9,7 +9,8 @@
       "nickname": "test1",
       "password": "1234!",
       "confirmPassword": "1234!",
-      "address": "서울시 강남구",
+      "address1": "서울특별시 강남구 도산대로 144 (논현동)",
+      "address2": "101호",
       "phoneNumber": "010-1111-1111",
       "role": "BREEDER",
       "mainBreedDtoRequest":
@@ -26,9 +27,14 @@
       "nickname": "test2",
       "password": "1234!",
       "confirmPassword": "1234!",
-      "address": "충청남도 논산시",
+      "address1": "충청남도 논산시 강변로 44 (등화동)",
       "phoneNumber": "010-1111-1111",
-      "role": "BREEDER"
+      "role": "BREEDER",
+      "mainBreedDtoRequest":
+      {
+        "dogTypeId"
+        :  []
+      }
     },
     {
       "emailChecked" : true,
@@ -38,13 +44,14 @@
       "nickname": "test3",
       "password": "1234!",
       "confirmPassword": "1234!",
-      "address": "제주도 서귀포시",
+      "address1": "제주특별자치도 서귀포시 서문로 4 (서귀동)",
+      "address2" : "더 그레이튼 오피스텔 101동 10층",
       "phoneNumber": "010-1111-1111",
       "role": "BREEDER",
       "mainBreedDtoRequest":
       {
         "dogTypeId"
-        :  [5]
+        :  [10]
       }
     },
     {
@@ -55,7 +62,8 @@
       "nickname": "test4",
       "password": "1234!",
       "confirmPassword": "1234!",
-      "address": "경기도 안양시",
+      "address1": "경기도 안양시 동안구 벌말로 72-9 (관양동)",
+      "address2":"레존텍 사옥",
       "phoneNumber": "010-1111-1111",
       "role": "ADOPTER"
     },
@@ -67,13 +75,14 @@
       "nickname": "test5",
       "password": "1234!",
       "confirmPassword": "1234!",
-      "address": "경기도 고양시 일산동구",
+      "address1": "경기도 고양시 일산동구 고봉로531번길 90-96 (성석동)",
+      "address2":"101동 3층",
       "phoneNumber": "010-1111-1111",
       "role": "BREEDER",
       "mainBreedDtoRequest":
       {
         "dogTypeId"
-        :  [7,8]
+        :  [12,13]
       }
     },
     {
@@ -84,13 +93,14 @@
       "nickname": "test6",
       "password": "1234!",
       "confirmPassword": "1234!",
-      "address": "서울특별시 강남구 역삼동",
+      "address1": "서울특별시 강남구 언주로 555",
+      "address2": "시티프라디움 더 강남 201동",
       "phoneNumber": "010-1111-1111",
       "role": "BREEDER",
       "mainBreedDtoRequest":
       {
         "dogTypeId"
-        :  [9,10]
+        :  [22,26]
       }
     },
     {
@@ -101,9 +111,14 @@
       "nickname": "test7",
       "password": "1234!",
       "confirmPassword": "1234!",
-      "address": "서울시 강남구",
+      "address1": "서울특별시 강남구 광평로20길 8 (일원동)",
       "phoneNumber": "010-1111-1111",
-      "role": "BREEDER"
+      "role": "BREEDER",
+      "mainBreedDtoRequest":
+      {
+        "dogTypeId"
+        :  []
+      }
     },
     {
       "emailChecked" : true,
@@ -113,13 +128,13 @@
       "nickname": "test8",
       "password": "1234!",
       "confirmPassword": "1234!",
-      "address": "부산광역시 해운대구",
+      "address1": "부산광역시 해운대구 달맞이길 185 (중동)",
       "phoneNumber": "010-1111-1111",
       "role": "BREEDER",
       "mainBreedDtoRequest":
       {
         "dogTypeId"
-        :  [2,3]
+        :  [34,35]
       }
     },
     {
@@ -130,13 +145,14 @@
       "nickname": "test9",
       "password": "1234!",
       "confirmPassword": "1234!",
-      "address": "대전광역시 유성구",
+      "address1": "대전광역시 유성구 계룡로 114 (봉명동)",
+      "address2": "대전유성BYC빌딩",
       "phoneNumber": "010-1111-1111",
       "role": "BREEDER",
       "mainBreedDtoRequest":
       {
         "dogTypeId"
-        :  [1]
+        :  [36]
       }
     },
     {
@@ -147,13 +163,13 @@
       "nickname": "test10",
       "password": "1234!",
       "confirmPassword": "1234!",
-      "address": "광주광역시 서구",
+      "address1": "광주광역시 서구 서창발산길 20-12 (서창동)",
       "phoneNumber": "010-1111-1111",
       "role": "BREEDER",
       "mainBreedDtoRequest":
       {
         "dogTypeId"
-        :  [16]
+        :  [37]
       }
     },
     {
@@ -164,9 +180,15 @@
       "nickname": "test11",
       "password":"1234!",
       "confirmPassword": "1234!",
-      "address":"울산광역시 남구",
+      "address1":"울산광역시 남구 봉월로137번길 19 (신정동)",
+      "address2": "301동 14층",
       "phoneNumber":"010-1111-1111",
-      "role":"BREEDER"
+      "role":"BREEDER",
+      "mainBreedDtoRequest":
+      {
+        "dogTypeId"
+        :  []
+      }
     },
     {
       "emailChecked" : true,
@@ -176,13 +198,14 @@
       "nickname": "test12",
       "password":"1234!",
       "confirmPassword": "1234!",
-      "address":"경상남도 창원시 의창구",
+      "address1":"경상남도 창원시 의창구 태복산로27번길 33 (도계동, 경남빌라)",
+      "address2": "101동 1001호",
       "phoneNumber":"010-1111-1111",
       "role":"BREEDER",
       "mainBreedDtoRequest":
       {
         "dogTypeId"
-        :  [6]
+        :  [37]
       }
     },
     {
@@ -193,7 +216,8 @@
       "nickname": "test13",
       "password":"1234!",
       "confirmPassword": "1234!",
-      "address":"전라남도 목포시",
+      "address1":"전라남도 목포시 연산백련로1번길 112-11 (연산동)",
+      "address2": "101동 1001호",
       "phoneNumber":"010-1111-1111",
       "role":"BREEDER",
       "mainBreedDtoRequest":
@@ -207,12 +231,121 @@
       "nicknameChecked" : true,
       "phoneNumberChecked" : true,
       "email": "test14@test.com",
-      "nickname": "test4",
-      "password": "1234!",
+      "nickname": "test14",
+      "password":"1234!",
       "confirmPassword": "1234!",
-      "address": "경기도 구리시",
-      "phoneNumber": "010-1111-1111",
-      "role": "ADOPTER"
+      "address1":"경기도 성남시 분당구 삼평동 123-45번지",
+      "phoneNumber":"010-1111-1111",
+      "role":"ADOPTER"
+    },
+    {
+      "emailChecked" : true,
+      "nicknameChecked" : true,
+      "phoneNumberChecked" : true,
+      "email": "test15@test.com",
+      "nickname": "test15",
+      "password":"1234!",
+      "confirmPassword": "1234!",
+      "address1":"경기도 안양시 동안구 벌말로 72-9 (관양동)",
+      "phoneNumber":"010-1111-1111",
+      "role":"ADMIN"
+    },
+    {
+      "emailChecked" : true,
+      "nicknameChecked" : true,
+      "phoneNumberChecked" : true,
+      "email": "test16@test.com",
+      "nickname": "test16",
+      "password":"1234!",
+      "confirmPassword": "1234!",
+      "address1":"강원도 강릉시 내곡동 127",
+      "phoneNumber":"010-1111-1111",
+      "role":"BREEDER",
+      "mainBreedDtoRequest":
+      {
+        "dogTypeId"
+        :  [14]
+      }
+    },
+    {
+      "emailChecked" : true,
+      "nicknameChecked" : true,
+      "phoneNumberChecked" : true,
+      "email": "test17@test.com",
+      "nickname": "test17",
+      "password":"1234!",
+      "confirmPassword": "1234!",
+      "address1":"부산광역시 동구 망양로833번가길 2(수정동)",
+      "phoneNumber":"010-1111-1111",
+      "role":"BREEDER",
+      "mainBreedDtoRequest":
+      {
+        "dogTypeId"
+        :  [19]
+      }
+    },
+    {
+      "emailChecked" : true,
+      "nicknameChecked" : true,
+      "phoneNumberChecked" : true,
+      "email": "test18@test.com",
+      "nickname": "test18",
+      "password":"1234!",
+      "confirmPassword": "1234!",
+      "address1":"세종시 조치원읍 남리 456",
+      "phoneNumber":"010-1111-1111",
+      "role":"BREEDER",
+      "mainBreedDtoRequest":
+      {
+        "dogTypeId"
+        :  [2,5]
+      }
+    },
+    {
+      "emailChecked" : true,
+      "nicknameChecked" : true,
+      "phoneNumberChecked" : true,
+      "email": "test19@test.com",
+      "nickname": "test19",
+      "password":"1234!",
+      "confirmPassword": "1234!",
+      "address1":"경기도 용인시 수지구 신봉동 876",
+      "phoneNumber":"010-1111-1111",
+      "role":"BREEDER",
+      "mainBreedDtoRequest":
+      {
+        "dogTypeId"
+        :  [5]
+      }
+    },
+    {
+      "emailChecked" : true,
+      "nicknameChecked" : true,
+      "phoneNumberChecked" : true,
+      "email": "test20@test.com",
+      "nickname": "test20",
+      "password":"1234!",
+      "confirmPassword": "1234!",
+      "address1":"경기도 파주시 검산동 130-8",
+      "phoneNumber":"010-1111-1111",
+      "role":"BREEDER",
+      "mainBreedDtoRequest":
+      {
+        "dogTypeId"
+        :  [14]
+      }
+    },
+    {
+      "emailChecked" : true,
+      "nicknameChecked" : true,
+      "phoneNumberChecked" : true,
+      "email": "test21@test.com",
+      "nickname": "test21",
+      "password":"1234!",
+      "confirmPassword": "1234!",
+      "address1":"경기도 파주시 검산동 130-8",
+      "phoneNumber":"010-1111-1111",
+      "role":"ADOPTER"
     },
     {
       "email": "test2@test.com",

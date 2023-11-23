@@ -34,7 +34,7 @@ import java.util.Map;
 @RestController
 @RequiredArgsConstructor
 @Slf4j
-@RequestMapping("/breeders")
+@RequestMapping("/api/breeders")
 @Tag(name = "브리더 둘러보기", description = "브리더 조회 API")
 public class BreederController {
 
