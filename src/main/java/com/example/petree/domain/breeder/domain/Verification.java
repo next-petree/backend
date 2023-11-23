@@ -15,6 +15,3 @@ public enum Verification {
     yes,
     no
 }
-
-
-
