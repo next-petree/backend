@@ -1,0 +1,11 @@
+{
+  "POST - http://localhost:8010/dogs":
+  {
+    "id": 1,
+    "gender": "FEMALE",
+    "status": "DONE",
+    "birthDate": "2021-03-15",
+    "name": "땅콩",
+    "management": "매우 귀여움"
+  }
+}

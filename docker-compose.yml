@@ -1,0 +1,21 @@
+version: '3'
+services:
+  backend:
+    container_name: spring-backend
+    image: 049643198326.dkr.ecr.ap-northeast-2.amazonaws.com/ecr-repo:latest-spring
+    ports:
+      - "8080:8080"
+    networks:
+      - my_network
+
+  redis:
+    container_name: redis-backend
+    image: 049643198326.dkr.ecr.ap-northeast-2.amazonaws.com/ecr-redis:latest-redis
+    #image: redis:latest
+    ports:
+      - 6379:6379
+    networks:
+      - my_network
+
+networks:
+  my_network:

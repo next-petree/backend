@@ -1,0 +1,314 @@
+{
+  "POST - http://localhost:8010/signup" :
+  [
+    {
+      "emailChecked" : true,
+      "nicknameChecked" : true,
+      "phoneNumberChecked" : true,
+      "email": "test1@test.com",
+      "nickname": "test1",
+      "password": "1234!",
+      "confirmPassword": "1234!",
+      "address": "서울시 강남구",
+      "phoneNumber": "010-1111-1111",
+      "role": "BREEDER",
+      "mainBreedDtoRequest":
+      {
+        "dogTypeId"
+        :  [1,2,3]
+      }
+    },
+    {
+      "emailChecked" : true,
+      "nicknameChecked" : true,
+      "phoneNumberChecked" : true,
+      "email": "test2@test.com",
+      "nickname": "test2",
+      "password": "1234!",
+      "confirmPassword": "1234!",
+      "address": "충청남도 논산시",
+      "phoneNumber": "010-1111-1111",
+      "role": "BREEDER"
+    },
+    {
+      "emailChecked" : true,
+      "nicknameChecked" : true,
+      "phoneNumberChecked" : true,
+      "email": "test3@test.com",
+      "nickname": "test3",
+      "password": "1234!",
+      "confirmPassword": "1234!",
+      "address": "제주도 서귀포시",
+      "phoneNumber": "010-1111-1111",
+      "role": "BREEDER",
+      "mainBreedDtoRequest":
+      {
+        "dogTypeId"
+        :  [5]
+      }
+    },
+    {
+      "emailChecked" : true,
+      "nicknameChecked" : true,
+      "phoneNumberChecked" : true,
+      "email": "test4@test.com",
+      "nickname": "test4",
+      "password": "1234!",
+      "confirmPassword": "1234!",
+      "address": "경기도 안양시",
+      "phoneNumber": "010-1111-1111",
+      "role": "ADOPTER"
+    },
+    {
+      "emailChecked" : true,
+      "nicknameChecked" : true,
+      "phoneNumberChecked" : true,
+      "email": "test5@test.com",
+      "nickname": "test5",
+      "password": "1234!",
+      "confirmPassword": "1234!",
+      "address": "경기도 고양시 일산동구",
+      "phoneNumber": "010-1111-1111",
+      "role": "BREEDER",
+      "mainBreedDtoRequest":
+      {
+        "dogTypeId"
+        :  [7,8]
+      }
+    },
+    {
+      "emailChecked" : true,
+      "nicknameChecked" : true,
+      "phoneNumberChecked" : true,
+      "email": "test6@test.com",
+      "nickname": "test6",
+      "password": "1234!",
+      "confirmPassword": "1234!",
+      "address": "서울특별시 강남구 역삼동",
+      "phoneNumber": "010-1111-1111",
+      "role": "BREEDER",
+      "mainBreedDtoRequest":
+      {
+        "dogTypeId"
+        :  [9,10]
+      }
+    },
+    {
+      "emailChecked" : true,
+      "nicknameChecked" : true,
+      "phoneNumberChecked" : true,
+      "email": "test7@test.com",
+      "nickname": "test7",
+      "password": "1234!",
+      "confirmPassword": "1234!",
+      "address": "서울시 강남구",
+      "phoneNumber": "010-1111-1111",
+      "role": "BREEDER"
+    },
+    {
+      "emailChecked" : true,
+      "nicknameChecked" : true,
+      "phoneNumberChecked" : true,
+      "email": "test8@test.com",
+      "nickname": "test8",
+      "password": "1234!",
+      "confirmPassword": "1234!",
+      "address": "부산광역시 해운대구",
+      "phoneNumber": "010-1111-1111",
+      "role": "BREEDER",
+      "mainBreedDtoRequest":
+      {
+        "dogTypeId"
+        :  [2,3]
+      }
+    },
+    {
+      "emailChecked" : true,
+      "nicknameChecked" : true,
+      "phoneNumberChecked" : true,
+      "email": "test9@test.com",
+      "nickname": "test9",
+      "password": "1234!",
+      "confirmPassword": "1234!",
+      "address": "대전광역시 유성구",
+      "phoneNumber": "010-1111-1111",
+      "role": "BREEDER",
+      "mainBreedDtoRequest":
+      {
+        "dogTypeId"
+        :  [1]
+      }
+    },
+    {
+      "emailChecked" : true,
+      "nicknameChecked" : true,
+      "phoneNumberChecked" : true,
+      "email": "test10@test.com",
+      "nickname": "test10",
+      "password": "1234!",
+      "confirmPassword": "1234!",
+      "address": "광주광역시 서구",
+      "phoneNumber": "010-1111-1111",
+      "role": "BREEDER",
+      "mainBreedDtoRequest":
+      {
+        "dogTypeId"
+        :  [16]
+      }
+    },
+    {
+      "emailChecked" : true,
+      "nicknameChecked" : true,
+      "phoneNumberChecked" : true,
+      "email": "test11@test.com",
+      "nickname": "test11",
+      "password":"1234!",
+      "confirmPassword": "1234!",
+      "address":"울산광역시 남구",
+      "phoneNumber":"010-1111-1111",
+      "role":"BREEDER"
+    },
+    {
+      "emailChecked" : true,
+      "nicknameChecked" : true,
+      "phoneNumberChecked" : true,
+      "email": "test12@test.com",
+      "nickname": "test12",
+      "password":"1234!",
+      "confirmPassword": "1234!",
+      "address":"경상남도 창원시 의창구",
+      "phoneNumber":"010-1111-1111",
+      "role":"BREEDER",
+      "mainBreedDtoRequest":
+      {
+        "dogTypeId"
+        :  [6]
+      }
+    },
+    {
+      "emailChecked" : true,
+      "nicknameChecked" : true,
+      "phoneNumberChecked" : true,
+      "email": "test13@test.com",
+      "nickname": "test13",
+      "password":"1234!",
+      "confirmPassword": "1234!",
+      "address":"전라남도 목포시",
+      "phoneNumber":"010-1111-1111",
+      "role":"BREEDER",
+      "mainBreedDtoRequest":
+      {
+        "dogTypeId"
+        :  [1]
+      }
+    },
+    {
+      "emailChecked" : true,
+      "nicknameChecked" : true,
+      "phoneNumberChecked" : true,
+      "email": "test14@test.com",
+      "nickname": "test4",
+      "password": "1234!",
+      "confirmPassword": "1234!",
+      "address": "경기도 구리시",
+      "phoneNumber": "010-1111-1111",
+      "role": "ADOPTER"
+    },
+    {
+      "email": "test2@test.com",
+      "nickname": "test2",
+      "password":"1234!",
+      "address":"충청남도 논산시",
+      "phoneNumber":"010-1234-5678",
+      "role":"BREEDER"
+    },
+    {
+      "email": "test3@test.com",
+      "nickname": "test3",
+      "password":"1234!",
+      "address":"제주도 서귀포시",
+      "phoneNumber":"010-1234-5678",
+      "role":"BREEDER"
+    },
+    {
+      "email": "test4@test.com",
+      "nickname": "test4",
+      "password":"1234!",
+      "address":"경기도 안양시",
+      "phoneNumber":"010-1111-1111",
+      "role":"ADOPTER"
+    },
+    {
+      "email": "test5@test.com",
+      "nickname": "test5",
+      "password":"1234!",
+      "address": "경기도 고양시 일산동구",
+      "phoneNumber":"010-1111-1111",
+      "role":"BREEDER"
+    },
+    {
+      "email": "test6@test.com",
+      "nickname": "test6",
+      "password":"1234!",
+      "address":"서울특별시 강남구 역삼동",
+      "phoneNumber":"010-1111-1111",
+      "role":"BREEDER"
+    },
+    {
+      "email": "test7@test.com",
+      "nickname": "test7",
+      "password":"1234!",
+      "address":"인천광역시 남동구 만수동",
+      "phoneNumber":"010-1111-1111",
+      "role":"BREEDER"
+    },
+    {
+      "email": "test8@test.com",
+      "nickname": "test8",
+      "password":"1234!",
+      "address":"부산광역시 해운대구",
+      "phoneNumber":"010-1111-1111",
+      "role":"BREEDER"
+    },
+    {
+      "email": "test9@test.com",
+      "nickname": "test9",
+      "password":"1234!",
+      "address":"대전광역시 유성구",
+      "phoneNumber":"010-1111-1111",
+      "role":"BREEDER"
+    },
+    {
+      "email": "test10@test.com",
+      "nickname": "test10",
+      "password":"1234!",
+      "address":"광주광역시 서구",
+      "phoneNumber":"010-1111-1111",
+      "role":"BREEDER"
+    },
+    {
+      "email": "test11@test.com",
+      "nickname": "test11",
+      "password":"1234!",
+      "address":"울산광역시 남구",
+      "phoneNumber":"010-1111-1111",
+      "role":"BREEDER"
+    },
+    {
+      "email": "test12@test.com",
+      "nickname": "test12",
+      "password":"1234!",
+      "address":"경상남도 창원시 의창구",
+      "phoneNumber":"010-1111-1111",
+      "role":"BREEDER"
+    },
+    {
+      "email": "test13@test.com",
+      "nickname": "test13",
+      "password":"1234!",
+      "address":"전라남도 목포시",
+      "phoneNumber":"010-1111-1111",
+      "role":"BREEDER"
+    }
+  ]
+}
