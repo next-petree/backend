@@ -149,7 +149,7 @@ jobs:
   
             # Deploy Docker Compose
             docker-compose up -d
-
+  
       # Clear artifacts after deployment
       - name: Clear artifacts
         if: always()
