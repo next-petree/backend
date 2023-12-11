@@ -1,8 +1,5 @@
 package com.example.petree.domain.breeder.domain;
 
-import com.example.petree.domain.member.domain.Member;
-import org.springframework.beans.factory.annotation.Value;
-
 import java.util.List;
 import java.util.Set;
 
