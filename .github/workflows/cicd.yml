@@ -104,7 +104,7 @@ jobs:
         run: |
           docker tag redis:latest ${{ secrets.AWS_ECR_REGISTRY }}/${{ secrets.AWS_ECR_REPOSITORY_REDIS }}:$REDIS_IMAGE_TAG
           docker push ${{ secrets.AWS_ECR_REGISTRY }}/${{ secrets.AWS_ECR_REPOSITORY_REDIS }}:$REDIS_IMAGE_TAG
-     
+       
       # Copy docker-compose.yml to EC2 instance
       - name: Copy docker-compose.yml to EC2 instance
         uses: appleboy/scp-action@v0.1.4
