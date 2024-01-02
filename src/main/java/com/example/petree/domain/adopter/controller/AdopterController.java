@@ -105,7 +105,7 @@ public class AdopterController {
             )
     })
     public ResponseEntity<?> addOrUpdateEnvironments(Principal principal,
-                                                     @ModelAttribute ResidentialEnvDto.EnvRequestDto form) {
+                                                     @ModelAttribute @RequestPart( required = false ) ResidentialEnvDto.EnvRequestDto form) {
 
         if (principal == null) {
             throw new MissingPrincipalException();
