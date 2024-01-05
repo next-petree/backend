@@ -15,7 +15,7 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
  * DATE              AUTHOR             NOTE
  * -----------------------------------------------------------
  * 2023-07-11        박수현              최초 생성
- */
+ */  
 @Configuration
 public class WebConfig implements WebMvcConfigurer{
 
