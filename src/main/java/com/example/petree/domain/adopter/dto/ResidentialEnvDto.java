@@ -32,19 +32,29 @@ public class ResidentialEnvDto {
         @Schema(description = "삭제한 이미지의 식별자 id. 없으면 빈 배열로 보내주면 됨", example = "[1, 2]")
         private List<Long> deletedImgsId;
 
-        @Schema(description = "추가한 거실 이미지 객체. 없으면 빈 값으로 보내주면 됨")
-        @JsonSerialize(using = ToStringSerializer.class)
-        private MultipartFile livingRoomImg;
-
-        @Schema(description = "추가한 화장실 이미지 객체. 없으면 빈 값으로 보내주면 됨")
-        @JsonSerialize(using = ToStringSerializer.class)
-        private MultipartFile bathRoomImg;
-
-        @Schema(description = "추가한 마당 이미지 객체. 없으면 빈 값으로 보내주면 됨")
-        @JsonSerialize(using = ToStringSerializer.class)
-        private MultipartFile yardImg;
-
     }
+
+//    @Data
+//    public static class LivingRoomImgRequestDto{
+//        @Schema(description = "추가한 거실 이미지 객체. 없으면 빈 값으로 보내주면 됨")
+//        @JsonSerialize(using = ToStringSerializer.class)
+//        private MultipartFile livingRoomImg;
+//    }
+//
+//    @Data
+//    public static class BathRoomImgRequestDto{
+//        @Schema(description = "추가한 화장실 이미지 객체. 없으면 빈 값으로 보내주면 됨")
+//        @JsonSerialize(using = ToStringSerializer.class)
+//        private MultipartFile bathRoomImg;
+//    }
+//
+//    @Data
+//    public static class YardImgRequestDto{
+//        @Schema(description = "추가한 마당 이미지 객체. 없으면 빈 값으로 보내주면 됨")
+//        @JsonSerialize(using = ToStringSerializer.class)
+//        private MultipartFile yardImg;
+//    }
+
     @Getter
     @NoArgsConstructor
     public static class EnvResponseDto {

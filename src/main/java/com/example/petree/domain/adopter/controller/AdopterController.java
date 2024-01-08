@@ -20,6 +20,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.security.Principal;
 import java.util.List;
@@ -77,7 +78,7 @@ public class AdopterController {
     }
 
 
-    @PutMapping(value = "/residential-environments", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    @PutMapping(value = "/residential-environments", consumes = {MediaType.APPLICATION_JSON_VALUE, MediaType.MULTIPART_FORM_DATA_VALUE})
     @Operation(
             summary = "분양 희망자의 주거 환경 이미지 업데이트(추가/수정/삭제)",
             description = "분양 희망자가 전송한 주거환경 이미지로 업데이트 한다."
@@ -105,14 +106,17 @@ public class AdopterController {
             )
     })
     public ResponseEntity<?> addOrUpdateEnvironments(Principal principal,
-                                                     @ModelAttribute @RequestPart( required = false ) ResidentialEnvDto.EnvRequestDto form) {
+                                                     @RequestPart( required = false, name="deletedImgsId") ResidentialEnvDto.EnvRequestDto form,
+                                                     @RequestPart(required = false, name="livingRoomImg") MultipartFile liv,
+                                                     @RequestPart(required = false, name="bathRoomImg") MultipartFile bath,
+                                                     @RequestPart(required = false, name="yardImg") MultipartFile yard) {
 
         if (principal == null) {
             throw new MissingPrincipalException();
         }
 
         Adopter adopter = adopterRepository.findByEmail(principal.getName()).orElse(null);
-        adopterService.updatePhotos(adopter, form);
+        adopterService.updatePhotos(adopter, form, liv, bath, yard);
 
         return response.success(HttpStatus.OK);
     }

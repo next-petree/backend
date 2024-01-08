@@ -128,7 +128,11 @@ public class AdopterService {
      * @param form 삭제하거나 추가해야할 주거환경 정보가 들어있는 dto
      */
     @Transactional
-    public void updatePhotos(Adopter adopter, ResidentialEnvDto.EnvRequestDto form) {
+    public void updatePhotos(Adopter adopter,
+                             ResidentialEnvDto.EnvRequestDto form,
+                             MultipartFile liv,
+                             MultipartFile bath,
+                             MultipartFile yard) {
         // 삭제할 이미지 ID 리스트를 가져옴
         List<Long> deletedImgsId = form.getDeletedImgsId();
 
@@ -150,14 +154,14 @@ public class AdopterService {
 
 
         // 거실 이미지를 가져오기
-        MultipartFile livingRoomImg = form.getLivingRoomImg();
+        MultipartFile livingRoomImg = liv;
         // 이미지가 담겨있는지와, 거실 이미지가 이미 등록되어 있는지 확인. 참이라면 중복 등록이므로 예외 발생
-        log.info("거실이미지 확인 : " + livingRoomImg.getContentType());
-        if (livingRoomImg.getContentType() != null && savedSpaceTypes.contains(SpaceType.LIVING_ROOM)) {
-            throw new BusinessException(ErrorCode.HAS_MORE_THAN_ONE_SPACE_TYPE);
-        }
+        //log.info("거실이미지 확인 : " + livingRoomImg.getContentType());
+//        if (livingRoomImg.getContentType() != null && savedSpaceTypes.contains(SpaceType.LIVING_ROOM)) {
+//            throw new BusinessException(ErrorCode.HAS_MORE_THAN_ONE_SPACE_TYPE);
+//        }
         // 이미지가 담겨있는지 확인하고 참이면 해당 이미지 등록
-        if (livingRoomImg.getContentType() != null) {
+        if (livingRoomImg != null) {
             String originalFilename = livingRoomImg.getOriginalFilename();
 
             // 주거환경 이미지 객체를 생성하고 정보를 설정
@@ -172,11 +176,11 @@ public class AdopterService {
         }
 
         // 화장실 이미지도 거실 이미지와 동일한 로직으로 진행
-        MultipartFile bathRoomImg = form.getBathRoomImg();
-        if (bathRoomImg.getContentType() != null && savedSpaceTypes.contains(SpaceType.BATH_ROOM)) {
-            throw new BusinessException(ErrorCode.HAS_MORE_THAN_ONE_SPACE_TYPE);
-        }
-        if (bathRoomImg.getContentType() != null) {
+        MultipartFile bathRoomImg = bath;
+//        if (bathRoomImg.getContentType() != null && savedSpaceTypes.contains(SpaceType.BATH_ROOM)) {
+//            throw new BusinessException(ErrorCode.HAS_MORE_THAN_ONE_SPACE_TYPE);
+//        }
+        if (bathRoomImg != null) {
             String originalFilename = bathRoomImg.getOriginalFilename();
 
             // 주거환경 이미지 객체를 생성하고 정보를 설정
@@ -191,11 +195,11 @@ public class AdopterService {
         }
 
         // 화장실 이미지도 거실 이미지와 동일한 로직으로 진행
-        MultipartFile yardImg = form.getYardImg();
-        if (yardImg.getContentType() != null && savedSpaceTypes.contains(SpaceType.YARD)) {
-            throw new BusinessException(ErrorCode.HAS_MORE_THAN_ONE_SPACE_TYPE);
-        }
-        if (yardImg.getContentType() != null) {
+        MultipartFile yardImg = yard;
+//        if (yardImg.getContentType() != null && savedSpaceTypes.contains(SpaceType.YARD)) {
+//            throw new BusinessException(ErrorCode.HAS_MORE_THAN_ONE_SPACE_TYPE);
+//        }
+        if (yardImg != null) {
             String originalFilename = yardImg.getOriginalFilename();
 
             // 주거환경 이미지 객체를 생성하고 정보를 설정
