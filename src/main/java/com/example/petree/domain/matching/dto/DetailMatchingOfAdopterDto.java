@@ -35,9 +35,11 @@ public class DetailMatchingOfAdopterDto {
     private Gender gender;
     @Schema(description = "강아지 생년월일", example = "2023-07-01")
     private LocalDate birthDate;
+    @Schema(description = "브리더 닉네임(신청 승인 시에만 노출)", example = "test1")
+    private String breederNickname;
     @Schema(description = "브리더 전화번호(신청 승인 시에만 노출)", example = "010-1234-1234")
     private String breederPhoneNumber;
-    @Schema(description = "브리더 닉네임(신청 승인 시에만 노출)", example = "경기도 수원시 ~")
+    @Schema(description = "브리더 활동주소(신청 승인 시에만 노출)", example = "경기도 수원시 ~")
     private String breederAddress;
 
     public DetailMatchingOfAdopterDto(Matching matching) {
@@ -49,6 +51,7 @@ public class DetailMatchingOfAdopterDto {
             this.breedType = matching.getDog().getDogType().getName();
             this.gender = matching.getDog().getGender();
             this.birthDate = matching.getDog().getBirthDate();
+            this.breederNickname = matching.getBreeder().getNickname();
             this.breederPhoneNumber = matching.getBreeder().getPhoneNumber();
             this.breederAddress = matching.getBreeder().getAddress1();
         } else {
@@ -57,6 +60,7 @@ public class DetailMatchingOfAdopterDto {
             this.breedType = null;
             this.gender = null;
             this.birthDate = null;
+            this.breederNickname = null;
             this.breederPhoneNumber = null;
             this.breederAddress = null;
         }
