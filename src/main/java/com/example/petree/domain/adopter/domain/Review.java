@@ -53,6 +53,6 @@ public class Review {
     @JoinColumn(name = "adopter_id")
     private Adopter adopter;
 
-    @OneToMany(mappedBy = "review", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "review", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<ReviewImgFile> images = new ArrayList<>();
 }

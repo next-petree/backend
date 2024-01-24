@@ -14,6 +14,7 @@ import com.example.petree.domain.member.domain.Member;
 import com.example.petree.global.util.FileUtil;
 import com.example.petree.global.util.S3Util;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
@@ -39,6 +40,7 @@ import java.util.UUID;
 
 @Service
 @RequiredArgsConstructor
+@Slf4j
 public class ReviewService {
 
     private final ReviewRepository reviewRepository;
@@ -67,10 +69,26 @@ public class ReviewService {
             review.setContent(request.getContent());
         }
 
+        if (request.isDeleteImages()) {
+            deleteReviewImages(review);
+        }
+
+        updateReviewImages(request.getReviewImgFiles(), review);
+
+        // 리뷰 저장
+        reviewRepository.save(review);
+    }
+
+    private void deleteReviewImages(Review review) {
+        // 기존 이미지 삭제
+        reviewRepository.deleteReviewImgFilesByReview(review);
+    }
+
+    private void updateReviewImages(List<MultipartFile> newImages, Review review) {
         // 이미지 리스트를 수정하려면 이전 이미지 리스트를 제거하고 새로운 이미지를 추가
-        if (request.getReviewImgFiles() != null && !request.getReviewImgFiles().isEmpty()) {
-            List<ReviewImgFile> newImages = new ArrayList<>();
-            for (MultipartFile file : request.getReviewImgFiles()) {
+        List<ReviewImgFile> images = new ArrayList<>();
+        if (newImages != null && !newImages.isEmpty()) {
+            for (MultipartFile file : newImages) {
                 String originalFilename = file.getOriginalFilename();
                 String fileName = UUID.randomUUID().toString() + "." + fileUtil.extractExt(originalFilename);
                 String fileUrl = s3Util.upload(file, "review-img", fileName);
@@ -79,16 +97,18 @@ public class ReviewService {
                         .originalFileName(file.getOriginalFilename())
                         .fileName(fileName)
                         .fileUrl(fileUrl)
+                        .review(review)
                         .build();
 
-                reviewImgFileRepository.save(imgFile);
-                newImages.add(imgFile);
+                images.add(imgFile);
             }
-            review.setImages(newImages);
+            // 이미지 저장 및 리뷰에 새로운 이미지 설정
+            review.setImages(images);
         }
-
-        reviewRepository.save(review);
     }
+
+
+
 
     /**
      * @author 박수현

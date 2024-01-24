@@ -10,6 +10,8 @@ spring:
   # spring banner off
   main:
     banner-mode: "off"
+  jpa:
+    show-sql: true
 
   mvc:
     pathmatch:
@@ -39,5 +41,12 @@ springdoc:
     - com.example.petree.domain.breeder.controller
     - com.example.petree.domain.main_breed.controller
     - com.example.petree.domain.basic_test.controller
+    - com.example.petree.domain.adopter.controller
+
+logging:
+  level:
+    org:
+      hibernate:
+        SQL: DEBUG
 
 

@@ -35,7 +35,7 @@ public class ReviewImgFile {
     private String originalFileName;
     private String fileName;
     private String fileUrl;
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinColumn(name = "review_id")
     private Review review;
 }
