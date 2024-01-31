@@ -66,7 +66,7 @@
 
 💠 아키텍쳐 
 ---
-<img src="../petree-img/최종 아키텍쳐(0115).png">
+<img src="https://github.com/next-petree/backend/blob/main/petree-img/%EC%B5%9C%EC%A2%85%20%EC%95%84%ED%82%A4%ED%85%8D%EC%B3%90(0115).png">
 
 🖥️프로젝트 미리보기
 ---
