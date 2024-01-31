@@ -116,28 +116,37 @@ public class PossessionDogDto {
     public static class UpdateDogDto{
 
         @Schema(description = "보유 견종 성별", example = "FEMALE")
+        @NotNull(message = " 강아지의 성별은 필수 입력 값입니다.")
         private Gender gender;
 
         @Schema(description = "보유 견종 출생일", example = "2021-03-21")
+        @NotNull(message = "강아지의 출생일은 필수 입력 값입니다.")
         @DateTimeFormat(pattern = "yyyy-MM-dd")
         private LocalDate birthDate;
 
         @Schema(description = "보유 견종 이름", example = "이땅콩")
+        @NotBlank(message = "강아지의 이름은 필수 입력 값입니다.")
         private String name;
 
         @Schema(description = "보유 견종 특징", example = "3.7kg의 소형견")
+        @NotBlank(message = "강아지의 상세내용은 필수 입력 값입니다.")
+        @Size(max = 2000, message = "특징은 2000자 이내로 작성이 가능합니다.")
         private String management;
 
         @Schema(description = "보유 견종 입양 진행 상태",example = "AVAILABLE")
+        @NotBlank(message = "보유 견종 입양 진행 상태는 필수 입력 값입니다.")
         private Status status;
 
-        @Schema(description = "삭제할 이미지 파일 이름 목록")
-        private List<String> imgNameToDelete;
+        @Schema(description = "삭제할 이미지 파일 ID값")
+        @NotBlank(message = "삭제할 이미지 파일 ID값은 필수 입력 값입니다.")
+        private List<String> imgIdToDelete;
 
-        @Schema(description = "이미지 업로드 여부 ", example = "false")
-        private boolean uploadImage;
+        @Schema(description = "이미지 삭제 여부 ", example = "false")
+        @NotBlank(message = "이미지 삭제 여부는 필수 입력 값입니다.")
+        private boolean isDeleteImages;
 
         @Schema(description = "보유 견종의 이미지를 입력받는 리스트")
+        @NotBlank(message = "보유 견종의 이미지는 필수 입력 값입니다.")
         @JsonSerialize(using = ToStringSerializer.class)
         private List<MultipartFile> dogImgFiles;
 

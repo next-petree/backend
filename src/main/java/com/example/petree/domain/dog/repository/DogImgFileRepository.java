@@ -11,7 +11,7 @@ import java.util.List;
 public interface DogImgFileRepository extends JpaRepository<DogImgFile, Long> {
     List<DogImgFile> findByDogId(Long id);
 
-    void deleteByOriginalFileNameAndDogId(String originalFileName,Long dogId);
+    void deleteByIdAndDogId(Long fileId,Long dogId);
 
-    DogImgFile findByOriginalFileNameAndDogId(String originalFileName,Long dogId);
+    DogImgFile findByIdAndDogId(Long fileId,Long dogId);
 }

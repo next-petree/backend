@@ -1,5 +1,9 @@
 package com.example.petree.domain.dog.service;
 
+import com.example.petree.domain.adopter.domain.Adopter;
+import com.example.petree.domain.adopter.domain.Review;
+import com.example.petree.domain.adopter.domain.ReviewImgFile;
+import com.example.petree.domain.adopter.dto.ReviewDto;
 import com.example.petree.domain.breeder.domain.Breeder;
 import com.example.petree.domain.dog.controller.PossessionController;
 import com.example.petree.domain.dog.domain.*;
@@ -27,6 +31,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
@@ -202,8 +207,13 @@ public class DogService {
             String originalFileName = multipartFile.getOriginalFilename();
             String fileName = UUID.randomUUID().toString() + "." + fileUtil.extractExt(originalFileName);
             String fileUrl = s3Util.upload(multipartFile, "dog-img", fileName);
-            DogImgFile dogImgFile = new DogImgFile(originalFileName, fileName, fileUrl, dog);
-            dog.addDogImgFile(dogImgFile);
+            DogImgFile imgFile = DogImgFile.builder()
+                    .originalFileName(multipartFile.getOriginalFilename())
+                    .fileName(fileName)
+                    .fileUrl(fileUrl)
+                    .dog(dog)
+                    .build();
+            dog.addDogImgFile(imgFile);
         }
     }
 
@@ -245,104 +255,70 @@ public class DogService {
     }
 
     @Transactional
-    public PossessionDogDto.UpdateDogDto update(Breeder breeder, Long id, PossessionDogDto.UpdateDogDto possessionDogDto) {
-        Dog dog = dogRepository.findById(id)
-                .orElseThrow(() -> new IllegalArgumentException("해당 글이 존재하지 않습니다."));
-
-        Long breederId = breeder.getId();
-        if(!dog.getBreeder().getId().equals(breederId)){
-            throw new IllegalStateException("해당 글 수정에 대한 권한이 없습니다.");
-        }
-        // possessionDogDto의 patch 메소드를 사용하여 dog에 저장되어 있는 정보를 수정한다.
-        possessionDogDto.patch(dog);
-        // 수정한 정보를 저장한다.
-        dog.updateFromDto(possessionDogDto);
-        dogRepository.save(dog);
-
-        return new PossessionDogDto.UpdateDogDto(dog);
-    }
-
-    @Transactional
-    public PossessionDogDto.UpdateDogDto deleteAndAddImages(Breeder breeder, Long id, PossessionDogDto.UpdateDogDto possessionDogDto) {
-        Dog dog = dogRepository.findById(id)
-                .orElseThrow(() -> new IllegalArgumentException("해당 글이 존재하지 않습니다."));
-        // 이미지 삭제 처리
-        deleteDogImgFileSelect(dog, possessionDogDto);
-
-        int imgFilesCount = dog.getDogImgFiles().size();
-
-        if(imgFilesCount + possessionDogDto.getDogImgFiles().size()>4){
-            throw new IllegalArgumentException("이미지는 최대 4개까지만 등록할 수 있습니다.");
+    public void update(Breeder breeder, Dog dog, PossessionDogDto.UpdateDogDto request) {
+        // 작성자와 리뷰의 작성자가 일치하는지 확인
+        if (!dog.getBreeder().equals(breeder)) {
+            throw new IllegalArgumentException("해당 작성자만 수정할 수 있습니다.");
         }
 
-        addImg(breeder,id,possessionDogDto);
+        saveDataWithOutImage(dog, request);
 
-        List<DogImgFile> dogImgFiles = dogImgFileRepository.findByDogId(dog.getId());
-        if(dogImgFiles.size()<1){
-            throw new IllegalArgumentException("이미지는 최소 1개이상 등록되어 있어야합니다.");
+        if (request.isDeleteImages()) {
+            deleteReviewImages(dog);
         }
 
-        return new PossessionDogDto.UpdateDogDto(dog);
-    }
+        updateReviewImages(request.getDogImgFiles(), dog);
 
-    public void addImg(Breeder breeder, Long id, PossessionDogDto.UpdateDogDto possessionDogDto) {
-        Dog dog = dogRepository.findById(id)
-                .orElseThrow(() -> new IllegalArgumentException("해당 글이 존재하지 않습니다."));
-
-        if (possessionDogDto.isUploadImage()) {
-            if (!possessionDogDto.getDogImgFiles().isEmpty()) {
-                // 이미지 업로드 메소드를 사용하여 이미지 업로드 수행
-                possessionDogDto.getDogImgFiles().stream().forEach(multipartFile -> {
-                    String originalFileName = multipartFile.getOriginalFilename();
-                    String fileName = UUID.randomUUID().toString() + "." + fileUtil.extractExt(originalFileName);
-                    String fileUrl = s3Util.upload(multipartFile, "dog-img", fileName);
-                    DogImgFile dogImgFile = new DogImgFile(originalFileName, fileName, fileUrl, dog);
-                    dog.addDogImgFile(dogImgFile);
-                });
-            }
-        }
+        // 리뷰 저장
         dogRepository.save(dog);
     }
 
-
-    /**
-     * @author 이지수
-     * @date 2023-08-13
-     * @description : 수정 시 이미지 무조건 삭제되는 것을 선택적으로 삭제할 수 있게 수정
-     * 사용자에게 삭제할 filename을 입력받아서 삭제가 이루어짐
-     */
-
-    // 해당 dog의 이미지를 선택적으로 삭제함. 사용자에게 originalFileName 입력받아 해당 이미지 삭제
-    public void deleteDogImgFileSelect(Dog dog,PossessionDogDto.UpdateDogDto possessionDogDto) {
-        List<DogImgFile> dogImgFiles = dogImgFileRepository.findByDogId(dog.getId());
-        if (dogImgFiles.isEmpty()) {
-            throw new IllegalArgumentException("해당 강아지에 대한 이미지 파일이 존재하지 않습니다.");
+    private void saveDataWithOutImage(Dog dog, PossessionDogDto.UpdateDogDto request){
+        if (request.getGender() != null) {
+            dog.setGender(request.getGender());
         }
-        List<String> fileNamesToDelete = possessionDogDto.getImgNameToDelete();
-        if (fileNamesToDelete == null) {
-            return;
+        if (request.getBirthDate() != null) {
+            dog.setBirthDate(request.getBirthDate());
         }
 
-        for (String originalFileName : fileNamesToDelete) {
+        if (request.getName() != null) {
+            dog.setName(request.getName());
+        }
 
-                DogImgFile dogImgFile=dogImgFileRepository.findByOriginalFileNameAndDogId(originalFileName, dog.getId());
-                String fileName=dogImgFile.getFileName();
-                String s3path = "dog-img/" + fileName;
-                s3Util.delete(s3path); // S3 이미지 삭제 로직 호출
-                if(dogImgFile == null) {
-                    throw new IllegalArgumentException("삭제 요청하신 파일이 존재하지 않습니다.");
-                }
-                dogImgFileRepository.deleteByOriginalFileNameAndDogId(originalFileName, dog.getId());
+        if (request.getManagement() != null) {
+            dog.setManagement(request.getManagement());
+        }
+
+        if (request.getStatus() != null){
+            dog.setStatus(request.getStatus());
+        }
+    }
+
+    private void deleteReviewImages(Dog dog) {
+        // 기존 이미지 삭제
+        dogRepository.deleteDogImgFilesByDog(dog);
+    }
+
+    private void updateReviewImages(List<MultipartFile> newImages, Dog dog) {
+        // 이미지 리스트를 수정하려면 이전 이미지 리스트를 제거하고 새로운 이미지를 추가
+        List<DogImgFile> images = new ArrayList<>();
+        if (newImages != null && !newImages.isEmpty()) {
+            for (MultipartFile file : newImages) {
+                String originalFilename = file.getOriginalFilename();
+                String fileName = UUID.randomUUID().toString() + "." + fileUtil.extractExt(originalFilename);
+                String fileUrl = s3Util.upload(file, "dog-img", fileName);
+
+                DogImgFile imgFile = DogImgFile.builder()
+                        .originalFileName(file.getOriginalFilename())
+                        .fileName(fileName)
+                        .fileUrl(fileUrl)
+                        .dog(dog)
+                        .build();
+
+                images.add(imgFile);
             }
-        dog.getDogImgFiles().removeIf(imgFile -> {
-            String originalFileName = imgFile.getOriginalFileName();
-            Long dogId = imgFile.getDog().getId();
-
-            // 이미지 파일 객체를 삭제할 조건 설정
-            boolean shouldRemove = fileNamesToDelete.contains(originalFileName) && dogId.equals(dog.getId());
-
-            // 삭제 조건이 충족되면 true를 반환하여 이미지 파일 객체 삭제
-            return shouldRemove;
-        });
+            // 이미지 저장 및 리뷰에 새로운 이미지 설정
+            dog.setDogImgFiles(images);
+        }
     }
 }

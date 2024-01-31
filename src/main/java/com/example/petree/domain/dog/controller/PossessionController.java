@@ -1,5 +1,7 @@
 package com.example.petree.domain.dog.controller;
 
+import com.example.petree.domain.adopter.domain.Adopter;
+import com.example.petree.domain.adopter.domain.Review;
 import com.example.petree.domain.breeder.domain.Breeder;
 import com.example.petree.domain.breeder.repository.BreederRepository;
 import com.example.petree.domain.dog.domain.Dog;
@@ -11,6 +13,8 @@ import com.example.petree.domain.dog.service.DogService;
 import com.example.petree.domain.main_breed.domain.DogType;
 import com.example.petree.domain.main_breed.domain.MainBreed;
 import com.example.petree.domain.main_breed.service.MainBreedService;
+import com.example.petree.domain.member.domain.Member;
+import com.example.petree.domain.member.repository.MemberRepository;
 import com.example.petree.global.Response;
 import com.example.petree.global.ResponseSchema;
 import com.example.petree.global.error.exception.MissingPrincipalException;
@@ -23,6 +27,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
@@ -70,12 +75,14 @@ import java.util.Map;
 @RequiredArgsConstructor
 @RequestMapping("/api/breeder/dogs")
 @Tag(name = "브리더 회원, 마이페이지 보유견종관리", description = "브리더 회원, 마이페이지 보유견종관리 API")
+@Slf4j
 public class PossessionController {
 
     private final DogService dogService;
     private final DogRepository dogRepository;
     private final Response response;
     private final BreederRepository breederRepository;
+    private final MemberRepository memberRepository;
 
     @GetMapping
     @Operation(
@@ -194,17 +201,37 @@ public class PossessionController {
         if (principal == null) {
             throw new MissingPrincipalException();
         }
-        Breeder breeder= breederRepository.findByEmail(principal.getName()).orElse(null);
-        if(breeder != null) {
 
-            dogService.deleteAndAddImages(breeder,id,possessionDogDto);
+        Dog dog = dogRepository.findById(id).orElse(null);
 
-            dogService.update(breeder ,id, possessionDogDto);
+        if (dog == null) {
+            return response.fail(HttpStatus.NOT_FOUND, "해당 ID의 보유견종 글을 찾을 수 없습니다.");
+        }
 
-            return response.success(HttpStatus.OK, possessionDogDto);
+        Member member = memberRepository.findByEmail(principal.getName()).orElse(null);
 
-        }else {
-            return response.fail(HttpStatus.FORBIDDEN, Map.of("message", "브리더 회원이 아닙니다."));}
+        if (member != null) {
+            if (member.getRole().getTitle().equals("BREEDER")) {
+
+                int maxImageCount = 4;
+                int currentImageCount = possessionDogDto.getDogImgFiles().size();
+                log.info(currentImageCount + "요청한 이미지 개수");
+                if(currentImageCount <= 0){
+                    return response.fail(HttpStatus.BAD_REQUEST, "이미지는 필수로 등록해야합니다.");
+                }
+
+                if (currentImageCount > maxImageCount) {
+                    return response.fail(HttpStatus.BAD_REQUEST, "이미지는 최대 " + maxImageCount + "개까지 업로드 가능합니다.");
+                }
+
+                dogService.update((Breeder) member, dog, possessionDogDto);
+                return response.success(HttpStatus.OK, "수정이 성공적으로 이루어졌습니다.");
+            } else {
+                return response.fail(HttpStatus.FORBIDDEN, "브리더 회원이 아닙니다.");
+            }
+        } else {
+            return response.fail(HttpStatus.UNAUTHORIZED, "로그인이 필요합니다.");
+        }
     }
 
 
