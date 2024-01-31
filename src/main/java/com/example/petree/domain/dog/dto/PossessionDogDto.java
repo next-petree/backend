@@ -142,7 +142,7 @@ public class PossessionDogDto {
         private List<String> imgIdToDelete;
 
         @Schema(description = "이미지 삭제 여부 ", example = "false")
-        @NotBlank(message = "이미지 삭제 여부는 필수 입력 값입니다.")
+        @NotNull(message = "이미지 삭제 여부는 필수 입력 값입니다.")
         private boolean isDeleteImages;
 
         @Schema(description = "보유 견종의 이미지를 입력받는 리스트")

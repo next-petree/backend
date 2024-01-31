@@ -15,6 +15,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import java.time.LocalDate;
 import java.util.List;
@@ -69,8 +70,8 @@ public class ReviewDto {
         @Length(max = 3000, message = "내용은 최대 3000자까지 입력 가능합니다.")
         @Schema(description = "내용", example = "정성스럽게 키우곘습니다!")
         private String content;
-        @NotBlank(message = "이미지 삭제 여부는 필수 입력값입니다.")
-        @Schema(description = "이미지 삭제 여부")
+        @NotNull(message = "이미지 삭제 여부는 필수 입력값입니다.")
+        @Schema(description = "이미지 삭제 여부", example = "false")
         private boolean deleteImages;
         @NotEmpty(message = "이미지는 필수 입력값입니다.")
         @Schema(description = "분양 후기 이미지 리스트")
