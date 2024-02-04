@@ -57,6 +57,7 @@ public class PossessionDogDto {
         this.id=dog.getId();
         this.dogType=dog.getDogType().getName();
         this.gender=dog.getGender();
+        this.status=dog.getStatus();
         this.birthDate=dog.getBirthDate();
         this.name=dog.getName();
         this.management=dog.getManagement();
