@@ -1,5 +1,6 @@
 package com.example.petree.domain.dog.dto;
 
+import com.example.petree.domain.adopter.dto.ReviewDto;
 import com.example.petree.domain.dog.domain.Dog;
 import com.example.petree.domain.dog.domain.DogImgFile;
 import com.example.petree.domain.dog.domain.Gender;
@@ -49,11 +50,18 @@ public class PossessionDogDto {
     @Schema(description = "보유 견종 입양 진행 상태",example = "AVAILABLE")
     private Status status;
 
-    @Schema(description = "보유견종 이미지 리스트",example = "{https://petree-bucket.s3.ap-northeast-2.amazonaws.com/dog-img/3eaa46ee-5187-4cb9-9195-1b6231709a83.jpg}")
-    private List<String> dogImgUrl;
+    @Schema(description = "보유견종 이미지 리스트",example = "아이디값 + {https://petree-bucket.s3.ap-northeast-2.amazonaws.com/dog-img/3eaa46ee-5187-4cb9-9195-1b6231709a83.jpg}")
+    private List<PossesionDogImgResponseDto> dogImgId;
 
 
     public PossessionDogDto(Dog dog) {
+        List<PossesionDogImgResponseDto> imgResponseDtos = dog.getDogImgFiles().stream()
+                .map(imgFile -> PossesionDogImgResponseDto.builder()
+                        .id(imgFile.getId())
+                        .fileUrl(imgFile.getFileUrl())
+                        .build())
+                .collect(Collectors.toList());
+
         this.id=dog.getId();
         this.dogType=dog.getDogType().getName();
         this.gender=dog.getGender();
@@ -61,10 +69,7 @@ public class PossessionDogDto {
         this.birthDate=dog.getBirthDate();
         this.name=dog.getName();
         this.management=dog.getManagement();
-        this.dogImgUrl=dog.getDogImgFiles()
-                .stream()
-                .map(DogImgFile::getFileUrl)
-                .collect(Collectors.toList());
+        this.dogImgId = imgResponseDtos;
     }
 
     @Getter
@@ -182,6 +187,16 @@ public class PossessionDogDto {
 
 
 
+    }
+
+    @Data
+    @Builder
+    public static class PossesionDogImgResponseDto {
+
+        @Schema(description = "보유견종이미지 파일의 PK", example = "1")
+        private Long id;
+        @Schema(description = "S3에 저장되는 파일 경로", example = "s3://<bucket-name>/<file-path>/<file-name>\n")
+        private String fileUrl;
     }
 
 
